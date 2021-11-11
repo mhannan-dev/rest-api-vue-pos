@@ -37,11 +37,12 @@
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                   </div>
-                 
+
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>
+                  <router-link to="/" class="btn btn-success">Back</router-link>
                 </div>
               </form>
             </div>
