@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Route::any('(:any)/(:all?)', function($first, $rest=''){
-//     $page = $rest ? "{$first}/{$rest}" : $first;
-//     dd($page);
-// });
-
 Route::get('/{vue_capture?}', function () {
     return view('welcome');
 })->where('vue_capture', '[\/\w\.-]*');
