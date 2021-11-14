@@ -17,7 +17,8 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+       // $this->middleware('auth:api', ['except' => ['login','signup']]);
+        $this->middleware('JWT', ['except' => ['login','signup']]);
     }
     /**
      * Display a listing of the resource.
@@ -49,7 +50,7 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function signup(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -69,11 +70,9 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            return response()->json([
-                'success' => true,
-                'data' => $user,
-                'message' => 'User saved successfully',
-            ], 200);
+            //Return to login instead of json data
+            return $this->login($request);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -81,7 +80,15 @@ class AuthController extends Controller
             ], 400);
         }
     }
-
+     /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
     /**
      * Display the specified resource.
      *
@@ -187,11 +194,12 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Email or password is invalid please check'], 401);
         }
         return $this->respondWithToken($token);
 
     }
+
     /**
      * Get the token array structure.
      *
@@ -204,7 +212,11 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
+            'email' => auth()->user()->email,
+
         ]);
     }
     /**
@@ -221,8 +233,5 @@ class AuthController extends Controller
     {
         return 'okay refresh';
     }
-    public function me()
-    {
-        return 'okay me';
-    }
+
 }

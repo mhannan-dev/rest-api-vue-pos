@@ -12,7 +12,11 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="quickForm" novalidate="novalidate">
+              <form
+                id="quickForm"
+                novalidate="novalidate"
+                @submit.prevent="login"
+              >
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
@@ -22,6 +26,7 @@
                       class="form-control"
                       id="exampleInputEmail1"
                       placeholder="Enter email"
+                      v-model="form.email"
                     />
                   </div>
                   <div class="form-group">
@@ -32,6 +37,7 @@
                       class="form-control"
                       id="exampleInputPassword1"
                       placeholder="Password"
+                      v-model="form.password"
                     />
                   </div>
                 </div>
@@ -39,8 +45,8 @@
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>
 
-                    <router-link to="/register" class="btn btn-success">
-                   Register
+                  <router-link to="/register" class="btn btn-success">
+                    Register
                   </router-link>
 
                   <router-link to="/forget-password" class="btn btn-warning">
@@ -60,8 +66,28 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script type="text/javascript">
+export default {
+  data(){
+    return {
+      form: {
+          email: null,
+          password: null
+      }
+    }
+  },
+  methods:{
+    login(){
+        axios.post("/api/auth/login",this.form)
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  }
+  }
 </script>
 
 <style>
