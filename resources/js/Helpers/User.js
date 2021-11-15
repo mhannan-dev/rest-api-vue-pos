@@ -9,7 +9,7 @@ class User{
         }
     }
     hasToken(){
-        const storeToken = localStorage.getItem(token)
+        const storeToken = localStorage.getItem('token')
         if (storeToken) {
             return Token.isValid(storeToken) ? true : false
         }
@@ -23,7 +23,6 @@ class User{
             return localStorage.getItem('user');
         }
     }
-
     id(){
          if (this.loggedIn()) {
             const payload =  Token.payload(localStorage.getItem('token'));

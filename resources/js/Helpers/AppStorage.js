@@ -1,23 +1,23 @@
 class AppStorage{
     storeToken(token){
-        localforage.getItem('token', token);
+        localStorage.setItem('token', token);
     }
     storeUser(user){
-        localforage.getItem('user', user);
+        localStorage.setItem('user', user);
     }
     store(token, user){
         this.storeToken(token)
         this.storeUser(user)
     }
     clear(){
-        localforage.removeItem(token)
-        localforage.removeItem(user)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
     }
     getToken(){
-        localforage.getItem(token);
+        localStorage.setItem(token);
     }
     getUser(){
-        localforage.getItem(user);
+        localStorage.setItem(user);
     }
 
 }

@@ -6,9 +6,34 @@
 require('./bootstrap')
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+// Helpers
 import User from './Helpers/User'
 window.User = User
-Vue.use(VueRouter)
+//Sweet Alert
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  });
+
+window.Toast = Toast;
+//Another alert message
+//Message toastr
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
+import CxltToastr from 'cxlt-vue2-toastr'
+var toastrConfigs = {
+    position: 'top right',
+    showDuration: 2000
+}
+Vue.use(CxltToastr, toastrConfigs)
+
+Vue.use(CxltToastr)
+
+// Routes
 import { routes } from './routes'
 const router = new VueRouter({
     mode: 'history',

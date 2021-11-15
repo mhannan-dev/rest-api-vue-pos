@@ -1,10 +1,16 @@
-let login = require('./components/login.vue').default
-let register = require('./components/register.vue').default
-let forgetPass = require('./components/forgetPass.vue').default
+let login = require('./components/Auth/login.vue').default
+let register = require('./components/Auth/register.vue').default
+let forgotPass = require('./components/Auth/forgotPass.vue').default
+//Authentication route start
+let dashboard = require('./components/dashboard.vue').default
+let logout = require('./components/Auth/logout.vue').default
 
 // Register route array
 export const routes = [
     { path: '/', component: login, name: '/' },
     { path: '/register', component: register, name: 'register' },
-    { path: '/forget-password', component: forgetPass, name: 'forgetPass' }
+    { path: '/forgot-password', component: forgotPass, name: 'forgotPass' },
+
+    { path: '/dashboard', component: dashboard, name: 'dashboard' },
+    { path: '/logout', component: logout, name: 'logout' },
 ]

@@ -17,8 +17,8 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-       // $this->middleware('auth:api', ['except' => ['login','signup']]);
-        $this->middleware('JWT', ['except' => ['login','signup']]);
+        // $this->middleware('auth:api', ['except' => ['login','signup']]);
+        $this->middleware('JWT', ['except' => ['login', 'signup']]);
     }
     /**
      * Display a listing of the resource.
@@ -72,7 +72,6 @@ class AuthController extends Controller
             ]);
             //Return to login instead of json data
             return $this->login($request);
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -80,7 +79,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
-     /**
+    /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -192,12 +191,15 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $validateData = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
         $credentials = $request->only('email', 'password');
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Email or password is invalid please check'], 401);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Email or password is invalid'], 401);
         }
         return $this->respondWithToken($token);
-
     }
 
     /**
@@ -233,5 +235,4 @@ class AuthController extends Controller
     {
         return 'okay refresh';
     }
-
 }
