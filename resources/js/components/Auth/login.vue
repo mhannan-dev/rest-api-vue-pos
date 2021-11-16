@@ -95,8 +95,10 @@ export default {
     if (User.loggedIn()) {
       //Redirect to dashboard route
       this.$router.push("dashboard");
+
     }
   },
+
   //Data property
   data() {
     return {
@@ -125,7 +127,6 @@ export default {
         })
         // .catch(error =>this.errors = error.response.data.errors)
         .catch((error) => {
-         
           this.erros = error.response.data.errors;
           this.$toast.error({
             title: "Error",
@@ -133,6 +134,11 @@ export default {
           });
         });
     },
+    toggleBodyClass(className) {
+      const el = document.body;
+      console.log(el);
+      el.classList.remove(content-wrapper);
+    }
   },
 };
 </script>

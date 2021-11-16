@@ -10,6 +10,8 @@ Vue.use(VueRouter)
 // Helpers
 import User from './Helpers/User'
 window.User = User
+import Notifications from './Helpers/Notifications'
+window.Notifications = Notifications
 //Sweet Alert
 import Swal from 'sweetalert2'
 window.Swal = Swal;
@@ -30,9 +32,8 @@ var toastrConfigs = {
     showDuration: 2000
 }
 Vue.use(CxltToastr, toastrConfigs)
-
 Vue.use(CxltToastr)
-
+//import { objectToFormData } from 'object-to-formdata'
 // Routes
 import { routes } from './routes'
 const router = new VueRouter({
