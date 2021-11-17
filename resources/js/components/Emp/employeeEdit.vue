@@ -30,7 +30,7 @@
               <div class="card-body">
                 <form
                   method="post"
-                  @submit.prevent="addEmployee"
+                  @submit.prevent="updateEmployee"
                   enctype="multipart/form-data"
                 >
                   <div class="form-row">
@@ -46,7 +46,6 @@
                       <p v-if="erros.name" class="text-danger">
                         {{ erros.name[0] }}
                       </p>
-
                     </div>
                     <div class="form-group col-md-4">
                       <label for="inputEmail4">Email</label>
@@ -60,7 +59,6 @@
                       <p v-if="erros.email" class="text-danger">
                         {{ erros.email[0] }}
                       </p>
-
                     </div>
                     <div class="form-group col-md-4">
                       <label for="salary">Salary</label>
@@ -74,7 +72,6 @@
                       <p v-if="erros.salary" class="text-danger">
                         {{ erros.salary[0] }}
                       </p>
-
                     </div>
                   </div>
 
@@ -91,7 +88,6 @@
                       <p v-if="erros.nid" class="text-danger">
                         {{ erros.nid[0] }}
                       </p>
-
                     </div>
                     <div class="form-group col-md-6">
                       <label for="mobile">Mobile No</label>
@@ -131,11 +127,10 @@
                             <i class="fa fa-calendar"></i>
                           </div>
                         </div>
-
                       </div>
                       <p v-if="erros.joining_date" class="text-danger">
-                          {{ erros.joining_date[0] }}
-                        </p>
+                        {{ erros.joining_date[0] }}
+                      </p>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="address">Address</label>
@@ -170,7 +165,7 @@
                       </div>
                     </div>
                     <img
-                      :src="form.image"
+                      :src="form.newImage"
                       height="80px"
                       class="img-fluid m-2"
                       width="80px;"
@@ -207,17 +202,26 @@ export default {
   data() {
     return {
       form: {
-        name: null,
-        email: null,
-        salary: null,
-        address: null,
-        nid: null,
-        joining_date: null,
-        image: null
+        name: '',
+        email: '',
+        salary: '',
+        address: '',
+        nid: '',
+        joining_date: '',
+        image: '',
+        newImage: ''
       },
       erros: [],
     };
   },
+  created() {
+    let id = this.$route.params.id;
+    axios
+      .get("/api/employee/" + id)
+      .then(({ data }) => (this.form = data))
+      .catch(console.log("error"));
+  },
+
   //Methods here
   methods: {
     onFileSelected(e) {
@@ -228,13 +232,13 @@ export default {
       } else {
         let reader = new FileReader();
         reader.onload = (event) => {
-          this.form.image = event.target.result;
-          //console.log(event.target.result);
+          this.form.newImage = event.target.result;
         };
         reader.readAsDataURL(file);
       }
     },
-    addEmployee() {
+    updateEmployee() {
+      let id = this.$route.params.id;
       axios
         .post('/api/employee', this.form)
         .then((response) => {
@@ -244,9 +248,9 @@ export default {
           Notifications.success();
         })
         .catch((error) => {
-          console.log(error);
-          this.erros = error.response.data.errors;
-          Notifications.error();
+          //console.log(error);
+          //this.erros = error.response.data.errors;
+          //Notifications.error();
         });
     },
   },

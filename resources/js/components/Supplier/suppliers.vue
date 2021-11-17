@@ -13,6 +13,7 @@
               <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div>
+          <!-- /.col -->
         </div>
         <!-- /.row -->
       </div>
@@ -22,32 +23,34 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3 mb-2">
+            <div class="col-md-3 mb-2">
             <input
               type="text"
               class="form-control"
-              placeholder="Search Employee Name"
+              placeholder="Search data"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Employees</h3>
+                <h3 class="card-title">Suppliers</h3>
                 <router-link
-                  to="/employee-add"
+                  to="/supplier-add"
                   class="btn btn-success float-right"
                 >
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Employee</router-link
+                  Supplier</router-link
                 >
               </div>
               <!-- /.card-header -->
+
               <div class="card-body">
                 <div
                   id="example2_wrapper"
                   class="dataTables_wrapper dt-bootstrap4"
                 >
+
                   <div class="row">
                     <div class="col-sm-12">
                       <table
@@ -57,62 +60,33 @@
                         width="100%"
                       >
                         <thead>
-                          <tr>
-                            <th class="th-sm">ID</th>
-                            <th class="th-sm">Name</th>
-                            <th class="th-sm">Mobile</th>
-                            <th class="th-sm">Address</th>
-                            <th class="th-sm">Photo</th>
-                            <th class="th-sm">Action</th>
+                          <tr role="row">
+                            <th>SL</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Actions</th>
                           </tr>
                         </thead>
-
-                        <tbody v-if="employees.length">
-                          <tr
-                            v-for="(employee, index) in filterSearch"
-                            :key="index"
-                          >
-                            <td>{{ ++index }}</td>
-                            <td>{{ employee.name }}</td>
-                            <td>{{ employee.mobile }}</td>
-                            <td>{{ employee.address }}</td>
-                            <td>
-                              <img
-                                class="img-fluid img-circle"
-                                width="80px"
-                                :src="employee.image"
-                                id="empPhoto"
-                                alt="image"
-                              />
+                        <tbody>
+                          <tr v-for="supplier in filterSearch" :key="supplier.id">
+                            <td class="dtr-control sorting_1" tabindex="0">
+                              {{ supplier.id }}
                             </td>
+                            <td>{{ supplier.title }}</td>
+                            <td>{{ supplier.mobile }}</td>
+                            <td>{{ supplier.address }}</td>
                             <td>
-                              <router-link
-                                :to="{
-                                  name: 'employeeEdit',
-                                  params: { id: employee.id },
-                                }"
-                                class="btn btn-primary btn-sm"
-                              >
-                                <i class="fas fa-edit"></i>
-                              </router-link>
-
-                              <a
-                                @click.prevent="deleteEmployee(employee.id)"
+                               <router-link :to="{name: 'supplierEdit', params: {id: supplier.id}}" class="btn btn-primary btn-sm">
+                                   <i class="fas fa-edit"></i>
+                               </router-link>
+                               <a
+                                @click.prevent="deleteItem(supplier)"
                                 href="#"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="fas fa-trash"></i>
                               </a>
-                            </td>
-                          </tr>
-                        </tbody>
-
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="6">
-                              <h5 class="text-center mt-4 mb-4">
-                                No item found.
-                              </h5>
                             </td>
                           </tr>
                         </tbody>
@@ -190,75 +164,53 @@
     </section>
   </div>
 </template>
+
 <script>
 export default {
   created() {
     //Comes form helpers
     if (!User.loggedIn()) {
+      //Redirect to dashboard route
       this.$router.push("/");
     }
   },
   data() {
     return {
-      employees: [],
-      searchTerm: "",
+      suppliers: [],
+      searchTerm: ''
     };
   },
-  computed: {
-    filterSearch() {
-      return this.employees.filter((employee) => {
-        return employee.mobile.match(this.searchTerm);
-      });
-    },
+  computed:{
+      filterSearch(){
+          return this.suppliers.filter(supplier =>{
+              return supplier.mobile.match(this.searchTerm)
+          })
+      }
   },
+
   methods: {
-    loadEmployees() {
+    loadSuppliers() {
       axios
-        .get("/api/employee")
+        .get("/api/supplier")
         .then((res) => {
-          this.employees = res.data.data;
+
+          this.suppliers = res.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    // deleteItem(employee) {
-    //   axios.delete(`/api/employee/${employee.id}`).then(() => {
-    //     this.$toast.success({
-    //       title: "Success!",
-    //       message: "Employee deleted successfully.",
-    //     });
-    //   });
-    //   let index = this.employees.indexOf(employee);
-    //   this.employees.splice(index, 1);
-    // },
-    deleteEmployee(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          //axios.delete(`/api/employee/${employee.id}`)
-          axios
-            .delete("/api/employee/" + id)
-            .then(() => {
-              this.employees = this.employees.filter((employee) => {
-                return employee.id != id;
-              });
-            })
-            .catch(() => {
-              this.$router.push("employees");
-            });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        }
+    deleteItem(supplier) {
+      axios.delete(`/api/supplier/${supplier.id}`).then(() => {
+        this.$toast.success({
+          title: "Success!",
+          message: "Supplier deleted successfully.",
+        });
       });
+      let index = this.suppliers.indexOf(supplier);
+      this.suppliers.splice(index, 1);
     },
   },
   created() {
-    this.loadEmployees();
+    this.loadSuppliers();
   },
 };
 </script>

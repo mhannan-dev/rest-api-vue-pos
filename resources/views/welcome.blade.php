@@ -176,6 +176,15 @@
 
                         </li>
                         <li class="nav-item">
+                            <router-link to="/suppliers" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Suppliers
+                                </p>
+                            </router-link>
+
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
@@ -271,14 +280,12 @@
             $("#footer").css("display", "");
             $("#topbar").css("display", "");
         }
-
         $(function() {
             //Date range picker
             $('#reservationdate').datetimepicker({
                 format: 'L'
             });
         })
-
     </script>
     <script>
         $(".custom-file-input").on("change", function() {

@@ -21,7 +21,6 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 3000
   });
-
 window.Toast = Toast;
 //Another alert message
 //Message toastr
