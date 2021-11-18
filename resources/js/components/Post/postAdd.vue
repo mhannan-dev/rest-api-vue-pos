@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Update supplier</h1>
+            <h1>Advanced Form</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -24,54 +24,47 @@
             <!-- jquery validation -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Update supplier</h3>
+                <h3 class="card-title">Add Post</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <form @submit.prevent="updateSupplier">
-                  <input type="hidden" name="_method" value="PATCH" />
+                <form @submit.prevent="addPost" enctype="multipart/form-data">
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <label for="inputEmail4">Name</label>
+                      <label for="inputEmail4">Enter Image Name</label>
                       <input
                         type="text"
                         class="form-control"
                         placeholder="Enter name"
                         v-model="form.title"
+                        name="title"
                       />
                       <p v-if="erros.title" class="text-danger">
                         {{ erros.title[0] }}
                       </p>
                     </div>
-
                     <div class="form-group col-md-4">
-                      <label for="mobile">Mobile No</label>
+                      <label for="inputEmail4">Image</label>
                       <input
-                        type="text"
+                        type="file"
+                        name="image"
                         class="form-control"
-                       placeholder="Enter mobile No"
-                        v-model="form.mobile"
+                        @change="onFileSelected"
+                        accept="image/*"
                       />
-                      <p v-if="erros.mobile" class="text-danger">
-                        {{ erros.mobile[0] }}
+
+                      <p v-if="erros.image" class="text-danger">
+                        {{ erros.image[0] }}
                       </p>
                     </div>
-
                     <div class="form-group col-md-4">
-                      <label for="address">Address</label>
-                      <input
-                        class="form-control"
-                        name="address"
-                        v-model="form.address"
-                        placeholder="Enter address"
-                      />
-                      <p v-if="erros.address" class="text-danger">
-                        {{ erros.address[0] }}
-                      </p>
+                      <label for="picture">Image Preview</label> <br>
+                      <img :src="form.image" alt="Image" style="hieght:80px; width: 80px;">
                     </div>
                   </div>
-
-                  <button type="submit" class="btn btn-success">Update</button>
+                  <button type="submit" class="btn btn-success">
+                    Save Post
+                  </button>
                 </form>
               </div>
             </div>
@@ -91,39 +84,39 @@
 
 <script type="text/javascript">
 export default {
-  created() {
-    //Comes form helpers - checking loggedin or not
-    if (!User.loggedIn()) {
-      this.$router.push("/");
-    }
-  },
   //Data property
   data() {
     return {
       form: {
-        title: "",
-        mobile: "",
-        address: ""
+        title: null,
+        image: null,
       },
       erros: [],
     };
   },
-  created() {
-    let id = this.$route.params.id;
-    axios
-      .get("/api/supplier/" + id)
-      .then(({ data }) => (this.form = data))
-      .catch(() => {
-        console.log("error");
-      });
-  },
-
   //Methods here
   methods: {
-    updateSupplier() {
-      axios.patch(`/api/supplier/${this.$route.params.id}`, this.form)
+    onFileSelected(e) {
+      const file = e.target.files[0];
+      // Do some client side validation...
+      if (file.size > 1048770) {
+        Notifications.imageValidation();
+      } else {
+        let reader = new FileReader();
+        reader.onload = (event) => {
+          this.form.image = event.target.result;
+          //console.log(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    addPost() {
+      axios
+        .post("/api/post", this.form)
         .then((response) => {
-          this.$router.push({ name: "suppliers" });
+          //Redirect to employees
+          this.$router.push({ name: "posts" });
+          //Toast message
           Notifications.success();
         })
         .catch((error) => {

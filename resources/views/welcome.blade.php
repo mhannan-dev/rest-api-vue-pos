@@ -185,6 +185,15 @@
 
                         </li>
                         <li class="nav-item">
+                            <router-link to="/categories" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Category
+                                </p>
+                            </router-link>
+
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>

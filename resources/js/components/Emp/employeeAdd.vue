@@ -149,25 +149,12 @@
                         {{ erros.address[0] }}
                       </p>
                     </div>
-
                     <div class="form-group form-row col-md-6">
                       <label for="photo">Photo</label>
-                      <div class="custom-file">
-                        <input
-                          type="file"
-                          class="custom-file-input"
-                          name="image"
-                          @change="onFileSelected"
-                          accept="image/*"
-                        />
+                      <input type="file" class="form-control" name="image" @change="onFileSelected" accept="image/*"/>
                         <p v-if="erros.image" class="text-danger">
                           {{ erros.image[0] }}
                         </p>
-
-                        <label class="custom-file-label" for="customFile"
-                          >Choose file</label
-                        >
-                      </div>
                     </div>
                     <img
                       :src="form.image"
@@ -176,7 +163,6 @@
                       width="80px;"
                     />
                   </div>
-
                   <button type="submit" class="btn btn-success">Save</button>
                 </form>
               </div>
@@ -244,9 +230,7 @@ export default {
           Notifications.success();
         })
         .catch((error) => {
-          console.log(error);
           this.erros = error.response.data.errors;
-          Notifications.error();
         });
     },
   },

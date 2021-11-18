@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Update supplier</h1>
+            <h1>Advanced Form</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -24,54 +24,29 @@
             <!-- jquery validation -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Update supplier</h3>
+                <h3 class="card-title">Add Category</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <form @submit.prevent="updateSupplier">
-                  <input type="hidden" name="_method" value="PATCH" />
+                <form @submit.prevent="updateCategory">
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <label for="inputEmail4">Name</label>
+                      <label for="category_name">Category Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter name"
-                        v-model="form.title"
+                        placeholder="Category name"
+                        v-model="form.category_name"
                       />
-                      <p v-if="erros.title" class="text-danger">
-                        {{ erros.title[0] }}
+                      <p v-if="erros.category_name" class="text-danger">
+                        {{ erros.category_name[0] }}
                       </p>
                     </div>
 
-                    <div class="form-group col-md-4">
-                      <label for="mobile">Mobile No</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                       placeholder="Enter mobile No"
-                        v-model="form.mobile"
-                      />
-                      <p v-if="erros.mobile" class="text-danger">
-                        {{ erros.mobile[0] }}
-                      </p>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                      <label for="address">Address</label>
-                      <input
-                        class="form-control"
-                        name="address"
-                        v-model="form.address"
-                        placeholder="Enter address"
-                      />
-                      <p v-if="erros.address" class="text-danger">
-                        {{ erros.address[0] }}
-                      </p>
-                    </div>
                   </div>
-
-                  <button type="submit" class="btn btn-success">Update</button>
+                  <button type="submit" class="btn btn-success">
+                    Update
+                  </button>
                 </form>
               </div>
             </div>
@@ -101,9 +76,7 @@ export default {
   data() {
     return {
       form: {
-        title: "",
-        mobile: "",
-        address: ""
+        category_name: ""
       },
       erros: [],
     };
@@ -111,7 +84,7 @@ export default {
   created() {
     let id = this.$route.params.id;
     axios
-      .get("/api/supplier/" + id)
+      .get("/api/category/" + id)
       .then(({ data }) => (this.form = data))
       .catch(() => {
         console.log("error");
@@ -120,10 +93,12 @@ export default {
 
   //Methods here
   methods: {
-    updateSupplier() {
-      axios.patch(`/api/supplier/${this.$route.params.id}`, this.form)
+    updateCategory() {
+      //console.log(this.$route.params.id)
+      axios.patch(`/api/category/${this.$route.params.id}`, this.form)
         .then((response) => {
-          this.$router.push({ name: "suppliers" });
+          this.$router.push({ name: "categories" });
+          //Toast message
           Notifications.success();
         })
         .catch((error) => {

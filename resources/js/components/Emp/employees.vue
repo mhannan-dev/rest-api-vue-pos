@@ -214,22 +214,12 @@ export default {
   methods: {
     loadEmployees() {
       axios
-        .get("/api/employee")
+        .get('api/employee')
         .then((res) => {
           this.employees = res.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    // deleteItem(employee) {
-    //   axios.delete(`/api/employee/${employee.id}`).then(() => {
-    //     this.$toast.success({
-    //       title: "Success!",
-    //       message: "Employee deleted successfully.",
-    //     });
-    //   });
-    //   let index = this.employees.indexOf(employee);
-    //   this.employees.splice(index, 1);
-    // },
     deleteEmployee(id) {
       Swal.fire({
         title: "Are you sure?",
@@ -242,17 +232,16 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           //axios.delete(`/api/employee/${employee.id}`)
-          axios
-            .delete("/api/employee/" + id)
+          axios.delete("api/employee/" + id)
             .then(() => {
               this.employees = this.employees.filter((employee) => {
                 return employee.id != id;
               });
             })
             .catch(() => {
-              this.$router.push("employees");
+              this.$router.push('employees');
             });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          Swal.fire("Deleted!", "Your data has been deleted.", "success");
         }
       });
     },

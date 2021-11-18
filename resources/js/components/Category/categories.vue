@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Category</h1>
           </div>
           <!-- /.col -->
           <div class="col-sm-6">
@@ -13,7 +13,6 @@
               <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div>
-          <!-- /.col -->
         </div>
         <!-- /.row -->
       </div>
@@ -23,34 +22,29 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 mb-2">
+          <div class="col-md-3 mb-2">
             <input
               type="text"
               class="form-control"
-              placeholder="Search data"
+              placeholder="Search Category"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Suppliers</h3>
-                <router-link
-                  to="/supplier-add"
-                  class="btn btn-success float-right"
-                >
+                <h3 class="card-title">Categories</h3>
+                <router-link to="/category-add" class="btn btn-success float-right">
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Supplier</router-link
+                  Category</router-link
                 >
               </div>
               <!-- /.card-header -->
-
               <div class="card-body">
                 <div
                   id="example2_wrapper"
                   class="dataTables_wrapper dt-bootstrap4"
                 >
-
                   <div class="row">
                     <div class="col-sm-12">
                       <table
@@ -60,29 +54,36 @@
                         width="100%"
                       >
                         <thead>
-                          <tr role="row">
-                            <th>SL</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Actions</th>
+                          <tr>
+                            <th class="th-sm">ID</th>
+                            <th class="th-sm">Name</th>
+                            <th class="th-sm">Status</th>
+                            <th class="th-sm">Action</th>
                           </tr>
                         </thead>
-                        <tbody v-if="suppliers.length">
-                          <tr v-for="supplier in filterSearch" :key="supplier.id">
-                            <td class="dtr-control sorting_1" tabindex="0">
-                              {{ supplier.id }}
-                            </td>
-                            <td>{{ supplier.title }}</td>
-                            <td>{{ supplier.mobile }}</td>
-                            <td>{{ supplier.address }}</td>
-                            <td>
-                               <router-link :to="{name: 'supplierEdit', params: {id: supplier.id}}" class="btn btn-primary btn-sm">
-                                   <i class="fas fa-edit"></i>
-                               </router-link>
 
-                               <button
-                                @click.prevent="deleteItem(supplier)"
+                        <tbody v-if="categories.length">
+                          <tr
+                            v-for="(catData, index) in filterSearch"
+                            :key="index"
+                          >
+                            <td>{{ ++index }}</td>
+                            <td>{{ catData.category_name }}</td>
+                            <td>Show active or Inactive</td>
+
+                            <td>
+                              <router-link
+                                :to="{
+                                  name: 'categoryEdit',
+                                  params: { id: catData.id },
+                                }"
+                                class="btn btn-primary btn-sm"
+                              >
+                                <i class="fas fa-edit"></i>
+                              </router-link>
+
+                              <button
+                                @click.prevent="deleteCategory(catData.id)"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="fas fa-trash"></i>
@@ -90,15 +91,17 @@
                             </td>
                           </tr>
                         </tbody>
+
                         <tbody v-else>
                           <tr>
                             <td colspan="6">
                               <h5 class="text-center mt-4 mb-4">
-                                No data found.
+                                No item found.
                               </h5>
                             </td>
                           </tr>
                         </tbody>
+                      </table>
                       </table>
                     </div>
                   </div>
@@ -173,53 +176,63 @@
     </section>
   </div>
 </template>
-
 <script>
 export default {
   created() {
     //Comes form helpers
     if (!User.loggedIn()) {
-      //Redirect to dashboard route
       this.$router.push("/");
     }
   },
   data() {
     return {
-      suppliers: [],
-      searchTerm: ''
+      categories: [],
+      searchTerm: "",
     };
   },
-  computed:{
-      filterSearch(){
-          return this.suppliers.filter(supplier =>{
-              return supplier.mobile.match(this.searchTerm)
-          })
-      }
+  computed: {
+    filterSearch() {
+      return this.categories.filter((category) => {
+        return category.category_name.match(this.searchTerm);
+      });
+    },
   },
-
   methods: {
-    loadSuppliers() {
+    loadCategories() {
       axios
-        .get("/api/supplier")
-        .then((res) => {
-
-          this.suppliers = res.data.data;
+        .get('api/category')
+        .then((response) => {
+          this.categories = response.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    deleteItem(supplier) {
-      axios.delete(`/api/supplier/${supplier.id}`).then(() => {
-        this.$toast.success({
-          title: "Success!",
-          message: "Supplier deleted successfully.",
-        });
+    deleteCategory(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete("api/category/" + id)
+            .then(() => {
+              this.categories = this.categories.filter((category) => {
+                return category.id != id;
+              });
+            })
+            .catch(() => {
+              this.$router.push('categories');
+            });
+          Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        }
       });
-      let index = this.suppliers.indexOf(supplier);
-      this.suppliers.splice(index, 1);
     },
   },
   created() {
-    this.loadSuppliers();
+    this.loadCategories();
   },
 };
 </script>

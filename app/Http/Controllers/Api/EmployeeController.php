@@ -61,7 +61,6 @@ class EmployeeController extends Controller
                 'errors' => $validator->errors(),
             ], 401);
         }
-
         try {
             if ($request->image) {
                 $position = strpos($request->image, ';');
@@ -90,7 +89,7 @@ class EmployeeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'Employee Saved successfully',
+                'message' => 'Employee not saved',
             ], 200);
         }
     }
@@ -103,7 +102,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = DB::table('employees')->where('id', $id)->first();
+        $employee = Employee::find($id);
         return response()->json($employee);
     }
 
@@ -127,6 +126,23 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required',
+            'address' => 'required',
+            'salary' => 'required',
+            'mobile' => 'required',
+            'joining_date' => 'required',
+            'image' => 'required',
+            'nid' => 'required',
+        ]);
+        //Check validation failure
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 401);
+        }
         $data = array();
         $data['name'] = $request->name;
         $data['email'] = $request->email;
@@ -158,6 +174,10 @@ class EmployeeController extends Controller
             $data['image'] = $oldImage;
             $user = DB::table('employees')->where('id', $id)->update($data);
         }
+        return response()->json([
+            'success' => true,
+            'message' => 'Employee updated successfully',
+        ], 200);
     }
 
     /**

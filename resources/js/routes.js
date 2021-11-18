@@ -12,6 +12,10 @@ let employeeEdit = require('./components/Emp/employeeEdit.vue').default
 let suppliers = require('./components/Supplier/suppliers.vue').default
 let supplierAdd = require('./components/Supplier/supplierAdd.vue').default
 let supplierEdit  = require('./components/Supplier/supplierEdit.vue').default
+//Post
+let categories = require('./components/Category/categories.vue').default
+let categoryAdd = require('./components/Category/categoryAdd.vue').default
+let categoryEdit  = require('./components/Category/categoryEdit.vue').default
 
 // Register route array
 export const routes = [
@@ -25,9 +29,13 @@ export const routes = [
     { path: '/employees', component: employees, name: 'employees' },
     { path: '/employee-add', component: employeeAdd, name: 'employeeAdd' },
     { path: '/employee-edit/:id', component: employeeEdit, name: 'employeeEdit' },
-
+    //Supplier
     { path: '/suppliers', component: suppliers, name: 'suppliers'},
     { path: '/supplier-add', component: supplierAdd, name: 'supplierAdd'},
-    { path: '/supplier-edit', component: supplierEdit, name: 'supplierEdit'},
+    { path: '/supplier-edit/:id', component: supplierEdit, name: 'supplierEdit'},
+    // Category
+    { path: '/categories', component: categories, name: 'categories'},
+    { path: '/category-add', component: categoryAdd, name: 'categoryAdd'},
+    { path: '/category-edit/:id', component: categoryEdit, name: 'categoryEdit'},
 
 ]

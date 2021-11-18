@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -23,7 +24,6 @@ class SupplierController extends Controller
             'message' => 'All suppliers',
             'data' => $suppliers
         ], 200);
-
     }
 
     /**
@@ -81,9 +81,10 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $supplier)
+    public function show($id)
     {
-        //
+        $supplier = Supplier::find($id);
+        return response()->json($supplier);
     }
 
     /**
@@ -106,7 +107,24 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'address' => 'required',
+            'mobile' => 'required'
+
+        ]);
+        //Check validation failure
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 401);
+        }
+        $supplier->update($request->all());
+        return response()->json([
+            'success' => true,
+            'message' => 'Supplier updated successfully',
+        ], 200);
     }
 
     /**

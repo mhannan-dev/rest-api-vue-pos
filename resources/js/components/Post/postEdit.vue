@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Update Employee</h1>
+            <h1>Advanced Form</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -24,15 +24,15 @@
             <!-- jquery validation -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Update Employee</h3>
+                <h3 class="card-title">Add Employee</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <form
+                  method="post"
                   @submit.prevent="updateEmployee"
                   enctype="multipart/form-data"
                 >
-                  <input type="hidden" name="_method" value="PATCH" />
                   <div class="form-row">
                     <div class="form-group col-md-4">
                       <label for="inputEmail4">Name</label>
@@ -147,26 +147,32 @@
 
                     <div class="form-group form-row col-md-6">
                       <label for="photo">Photo</label>
-                      <input
-                        type="file"
-                        class="form-control"
-                        name="image"
-                        @change="onFileSelected"
-                        accept="image/*"
-                      />
-                      <p v-if="erros.image" class="text-danger">
-                        {{ erros.image[0] }}
-                      </p>
+                      <div class="custom-file">
+                        <input
+                          type="file"
+                          class="custom-file-input"
+                          name="image"
+                          @change="onFileSelected"
+                          accept="image/*"
+                        />
+                        <p v-if="erros.image" class="text-danger">
+                          {{ erros.image[0] }}
+                        </p>
+
+                        <label class="custom-file-label" for="customFile"
+                          >Choose file</label
+                        >
+                      </div>
                     </div>
                     <img
-                      :src="form.image"
+                      :src="form.newImage"
                       height="80px"
                       class="img-fluid m-2"
                       width="80px;"
                     />
                   </div>
 
-                  <button type="submit" class="btn btn-success">Update</button>
+                  <button type="submit" class="btn btn-success">Save</button>
                 </form>
               </div>
             </div>
@@ -213,9 +219,7 @@ export default {
     axios
       .get("/api/employee/" + id)
       .then(({ data }) => (this.form = data))
-      .catch(() => {
-        console.log("error");
-      });
+      .catch(console.log("error"));
   },
 
   //Methods here
@@ -234,14 +238,23 @@ export default {
       }
     },
     updateEmployee() {
-      axios.patch(`/api/employee/${this.$route.params.id}`, this.form)
+      alert('The id is: ' + this.$route.params.id);
+      //let id = this.$route.params.id;
+      //axios.post('/api/employee', this.form)
+      //axios.patch(`/api/employee/${this.$route.params.id}`, this.form)
+      axios.patch(`/api/employee/`,this.form)
         .then((response) => {
-          this.$router.push({ name: "employees" });
+          //Redirect to employees
+          //this.$router.push("employees");
+          this.$router.push({ name: 'employees' });
           //Toast message
           Notifications.success();
         })
+
         .catch((error) => {
-          this.erros = error.response.data.errors;
+          //console.log(error);
+          //this.erros = error.response.data.errors;
+          //Notifications.error();
         });
     },
   },
