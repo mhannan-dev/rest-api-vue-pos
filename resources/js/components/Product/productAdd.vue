@@ -135,8 +135,7 @@
                     </div>
                     <div class="form-group col-md-3">
                       <label>Buying Date</label>
-                      <input id="datepicker" name="buying_date" v-model="form.buying_date" placeholder="mm-dd-yyyy" />
-                      <!-- <input type="date" class="today" /> -->
+                      <input id="datepicker" name="buying_date" v-model="form.buying_date" width="276" />
                       <p v-if="erros.buying_date" class="text-danger">
                         {{ erros.buying_date[0] }}
                       </p>

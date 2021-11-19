@@ -8,30 +8,11 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_lte') }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/dist/css/adminlte.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_lte') }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_lte') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/daterangepicker/daterangepicker.css">
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <!-- summernote -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/summernote/summernote-bs4.min.css">
     <style>
         .login-page,
         .register-page {
@@ -255,66 +236,25 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+    !-- REQUIRED SCRIPTS -->
 
     <!-- jQuery -->
     <script src="{{ URL::asset('admin_lte') }}/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="{{ URL::asset('admin_lte') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/chart.js/Chart.min.js"></script>
-
-    <!-- jQuery Knob Chart -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/moment/moment.min.js"></script>
-    <script src="{{ URL::asset('admin_lte') }}/plugins/daterangepicker/daterangepicker.js"></script>
-
-
-    <!-- Summernote -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="{{ URL::asset('admin_lte') }}/dist/js/adminlte.js"></script>
+    <script src="{{ URL::asset('admin_lte') }}/dist/js/adminlte.min.js"></script>
+
     <script src="{{ asset('js/app.js') }}"></script>
-    <!-- Select2 -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/select2/js/select2.full.min.js"></script>
-
-    <script src="{{ URL::asset('admin_lte') }}/plugins/inputmask/jquery.inputmask.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js">
-    </script>
-    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-
     <!-- Page specific script -->
     <script>
+        $('#datepicker').datepicker();
         let token = localStorage.getItem('token');
         if (token) {
             $("#sidebar").css("display", "");
             $("#footer").css("display", "");
             $("#topbar").css("display", "");
         }
-
-    </script>
-    <script>
-        $('#datepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-        });
-    </script>
-    <script>
-        $(".custom-file-input").on("change", function() {
-            var fileName = $(this).val().split("\\").pop();
-            $(this)
-                .siblings(".custom-file-label")
-                .addClass("selected")
-                .html(fileName);
-        });
     </script>
 </body>
 
