@@ -12,10 +12,14 @@ let employeeEdit = require('./components/Emp/employeeEdit.vue').default
 let suppliers = require('./components/Supplier/suppliers.vue').default
 let supplierAdd = require('./components/Supplier/supplierAdd.vue').default
 let supplierEdit  = require('./components/Supplier/supplierEdit.vue').default
-//Post
+//Category
 let categories = require('./components/Category/categories.vue').default
 let categoryAdd = require('./components/Category/categoryAdd.vue').default
 let categoryEdit  = require('./components/Category/categoryEdit.vue').default
+//Product
+let products = require('./components/Product/products.vue').default
+let productAdd = require('./components/Product/productAdd.vue').default
+let productEdit  = require('./components/Product/productEdit.vue').default
 
 // Register route array
 export const routes = [
@@ -37,5 +41,9 @@ export const routes = [
     { path: '/categories', component: categories, name: 'categories'},
     { path: '/category-add', component: categoryAdd, name: 'categoryAdd'},
     { path: '/category-edit/:id', component: categoryEdit, name: 'categoryEdit'},
+    // Product
+    { path: '/products', component: products, name: 'products'},
+    { path: '/product-add', component: productAdd, name: 'productAdd'},
+    { path: '/product-edit/:id', component: productEdit, name: 'productEdit'},
 
 ]

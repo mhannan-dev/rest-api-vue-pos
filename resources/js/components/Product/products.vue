@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Category</h1>
+            <h1 class="m-0">Dashboard</h1>
           </div>
           <!-- /.col -->
           <div class="col-sm-6">
@@ -26,17 +26,20 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Search Category"
+              placeholder="Search Employee Name"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Categories</h3>
-                <router-link to="/category-add" class="btn btn-success float-right">
+                <h3 class="card-title">products</h3>
+                <router-link
+                  to="/product-add"
+                  class="btn btn-success float-right"
+                >
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Category</router-link
+                  Employee</router-link
                 >
               </div>
               <!-- /.card-header -->
@@ -57,51 +60,67 @@
                           <tr>
                             <th class="th-sm">ID</th>
                             <th class="th-sm">Name</th>
-                            <th class="th-sm">Status</th>
+                            <th class="th-sm">Code</th>
+                            <th class="th-sm">Category</th>
+                            <th class="th-sm">Supplier</th>
+                            <th class="th-sm">Buy</th>
+                            <th class="th-sm">Sell Price</th>
+                            <th class="th-sm">Photo</th>
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
 
-                        <tbody v-if="categories.length">
+                        <tbody>
                           <tr
-                            v-for="(catData, index) in filterSearch"
+                            v-for="(product, index) in filterSearch"
                             :key="index"
                           >
                             <td>{{ ++index }}</td>
-                            <td>{{ catData.category_name }}</td>
-                            <td>Show active or Inactive</td>
-
+                            <td>{{ product.product_name }}</td>
+                            <td>{{ product.product_code }}</td>
+                            <td>{{ product.category.category_name }}</td>
+                            <td>{{ product.supplier.title }}</td>
+                            <td>{{ product.buying_price }}</td>
+                            <td>{{ product.selling_price }}</td>
+                            <td>
+                              <img
+                                class="img-fluid img-circle"
+                                width="80px"
+                                :src="product.product_image"
+                                id="productPhoto"
+                                alt="image"
+                              />
+                            </td>
+                            <td>
+                              <img
+                                class="img-fluid img-circle"
+                                width="80px"
+                                :src="product.image"
+                                id="empPhoto"
+                                alt="image"
+                              />
+                            </td>
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'categoryEdit',
-                                  params: { id: catData.id },
+                                  name: 'productEdit',
+                                  params: { id: product.id },
                                 }"
                                 class="btn btn-primary btn-sm"
                               >
                                 <i class="fas fa-edit"></i>
                               </router-link>
 
-                              <button
-                                @click.prevent="deleteCategory(catData.id)"
+                              <a
+                                @click.prevent="deleteEmployee(product.id)"
+                                href="#"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="fas fa-trash"></i>
-                              </button>
+                              </a>
                             </td>
                           </tr>
                         </tbody>
-
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="6">
-                              <h5 class="text-center mt-4 mb-4">
-                                No item found.
-                              </h5>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
                       </table>
                     </div>
                   </div>
@@ -186,27 +205,28 @@ export default {
   },
   data() {
     return {
-      categories: [],
+      products: [],
       searchTerm: "",
     };
   },
   computed: {
     filterSearch() {
-      return this.categories.filter((category) => {
-        return category.category_name.match(this.searchTerm);
+      return this.products.filter((product) => {
+        return product.product_name.match(this.searchTerm);
       });
     },
   },
   methods: {
-    loadCategories() {
+    loadProducts() {
       axios
-        .get('api/category')
-        .then((data) => {
-          this.categories = data.data;
+        .get("api/product")
+        .then((res) => {
+          //console.log(data);
+          this.products = res.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    deleteCategory(id) {
+    deleteEmployee(id) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -217,14 +237,16 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete("api/category/" + id)
+          //axios.delete(`/api/product/${employee.id}`)
+          axios
+            .delete("api/product/" + id)
             .then(() => {
-              this.categories = this.categories.filter((category) => {
-                return category.id != id;
+              this.products = this.products.filter((employee) => {
+                return employee.id != id;
               });
             })
             .catch(() => {
-              this.$router.push('categories');
+              this.$router.push("products");
             });
           Swal.fire("Deleted!", "Your data has been deleted.", "success");
         }
@@ -232,7 +254,7 @@ export default {
     },
   },
   created() {
-    this.loadCategories();
+    this.loadProducts();
   },
 };
 </script>

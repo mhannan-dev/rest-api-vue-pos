@@ -29,6 +29,7 @@
         href="{{ URL::asset('admin_lte') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/daterangepicker/daterangepicker.css">
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <!-- summernote -->
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/summernote/summernote-bs4.min.css">
     <style>
@@ -194,6 +195,15 @@
 
                         </li>
                         <li class="nav-item">
+                            <router-link to="/products" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Products
+                                </p>
+                            </router-link>
+
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
@@ -280,6 +290,7 @@
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="{{ URL::asset('admin_lte') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js">
     </script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 
     <!-- Page specific script -->
     <script>
@@ -289,12 +300,12 @@
             $("#footer").css("display", "");
             $("#topbar").css("display", "");
         }
-        $(function() {
-            //Date range picker
-            $('#reservationdate').datetimepicker({
-                format: 'L'
-            });
-        })
+
+    </script>
+    <script>
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
     </script>
     <script>
         $(".custom-file-input").on("change", function() {

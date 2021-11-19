@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,12 +17,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = Category::all();
-        return response()->json([
-            'success' => true,
-            'message' => 'All Category',
-            'data' => $allCategory,
-        ], 200);
+        $categories = Category::latest()->get();
+        return response()->json($categories, 200);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'All Category',
+        //     'data' => $category,
+        // ], 200);
     }
 
     /**
