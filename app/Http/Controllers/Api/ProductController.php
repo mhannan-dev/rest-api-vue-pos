@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -23,7 +23,7 @@ class ProductController extends Controller
                 $query->select('id', 'title');
             }, 'category' => function ($query) {
                 $query->select('id', 'category_name');
-            }
+            },
         ])->latest()->get();
         // $products = DB::table('products')
         //     ->join('categories', 'products.category_id', 'categories.id')
@@ -58,14 +58,14 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|numeric',
             'supplier_id' => 'required|numeric',
-            'product_name' => 'required',
-            'product_code' => 'required',
+            'title' => 'required',
+            'code' => 'required',
             'root' => 'required',
             'buying_price' => 'required',
             'selling_price' => 'required',
-            //'buying_date' => 'required',
+            'buying_date' => 'required',
             'product_image' => 'required',
-            'product_quantity' => 'required',
+            'buying_quantity' => 'required',
         ]);
         //Check validation failure
         if ($validator->fails()) {
@@ -88,23 +88,24 @@ class ProductController extends Controller
             //Saving other field to products table
             $product->category_id = $request->category_id;
             $product->supplier_id = $request->supplier_id;
-            $product->product_name = $request->product_name;
-            $product->product_code = $request->product_code;
+            $product->title = $request->title;
+            $product->code = $request->code;
             $product->root = $request->root;
             $product->buying_price = $request->buying_price;
             $product->selling_price = $request->selling_price;
             $product->buying_date = date('Y-m-d', strtotime($request->buying_date));
-            $product->product_quantity = $request->product_quantity;
+            $product->buying_quantity = $request->buying_quantity;
             $product->product_image = $image_url;
             $product->save();
             return response()->json([
                 'success' => true,
-                'message' => 'Product Saved successfully',
+                'message' => 'Product saved successfully!!',
             ], 200);
         } catch (\Throwable $th) {
+            //dd($th);
             return response()->json([
                 'success' => false,
-                'message' => 'Product not saved',
+                'message' => 'Product not saved!!',
             ], 400);
         }
     }
@@ -115,9 +116,10 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::find($id);
+        return response()->json($product);
     }
 
     /**
@@ -138,9 +140,64 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required|numeric',
+            'supplier_id' => 'required|numeric',
+            'title' => 'required',
+            'code' => 'required',
+            'root' => 'required',
+            'buying_price' => 'required',
+            'selling_price' => 'required',
+            'buying_date' => 'required',
+            'product_image' => 'required',
+            'buying_quantity' => 'required',
+        ]);
+        //Check validation failure
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => true,
+                'errors' => $validator->errors(),
+            ], 401);
+        }
+        $data = array();
+        $data['title'] = $request->title;
+        $data['category_id'] = $request->category_id;
+        $data['supplier_id'] = $request->supplier_id;
+        $data['code'] = $request->code;
+        $data['root'] = $request->root;
+        $data['buying_price'] = $request->buying_price;
+        $data['selling_price'] = $request->selling_price;
+        $data['buying_date'] = $request->buying_date;
+        $data['buying_quantity'] = $request->buying_quantity;
+        $product_image = $request->newImage;
+        //Upload image
+        if ($product_image) {
+            $position = strpos($product_image, ';');
+            $sub = substr($product_image, 0, $position);
+            $ext = explode('/', $sub)[1];
+            $name = time() . "." . $ext;
+            $img = Image::make($product_image)->resize(250, 250);
+            $upload_path = 'uploads/product/';
+            $image_url = $upload_path . $name;
+            $success = $img->save($image_url);
+            if ($success) {
+                $data['product_image'] = $image_url;
+                $img = DB::table('products')->where('id', $id)->first();
+                $image_path = $img->product_image;
+                $done = unlink($image_path);
+                $user = DB::table('products')->where('id', $id)->update($data);
+            }
+        } else {
+            $oldImage = $request->product_image;
+            $data['product_image'] = $oldImage;
+            $user = DB::table('products')->where('id', $id)->update($data);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Product updated successfully',
+        ], 200);
     }
 
     /**

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ URL::asset('admin_lte') }}/dist/css/adminlte.min.css">
-    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
     <style>
         .login-page,
         .register-page {
@@ -21,6 +21,7 @@
 
     </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -185,6 +186,24 @@
 
                         </li>
                         <li class="nav-item">
+                            <router-link to="/expenses" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Expenses
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </router-link>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <router-link to="/salaries" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Salary</p>
+                                    </router-link>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
@@ -236,10 +255,10 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    !-- REQUIRED SCRIPTS -->
-
-    <!-- jQuery -->
-    <script src="{{ URL::asset('admin_lte') }}/plugins/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ URL::asset('admin_lte') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -248,7 +267,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <!-- Page specific script -->
     <script>
-        $('#datepicker').datepicker();
         let token = localStorage.getItem('token');
         if (token) {
             $("#sidebar").css("display", "");
@@ -256,6 +274,13 @@
             $("#topbar").css("display", "");
         }
     </script>
+    <script>
+        $(function() {
+            var jqOld = jQuery.noConflict();
+            $("#datepicker").datepicker();
+        });
+    </script>
+
 </body>
 
 </html>

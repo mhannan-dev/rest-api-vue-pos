@@ -19,11 +19,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return response()->json([
-            'success' => true,
-            'message' => 'All employee',
-            'data' => $employees,
-        ], 200);
+        return response()->json($employees, 200);
     }
 
     /**
@@ -44,6 +40,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request, Employee $employee)
     {
+        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required',

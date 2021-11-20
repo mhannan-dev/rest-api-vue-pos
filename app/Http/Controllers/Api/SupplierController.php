@@ -19,11 +19,7 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::orderby('id', 'desc')->get();
-        return response()->json([
-            'success' => true,
-            'message' => 'All suppliers',
-            'data' => $suppliers
-        ], 200);
+        return response()->json($suppliers, 200);
     }
 
     /**

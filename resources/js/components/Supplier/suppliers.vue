@@ -196,14 +196,12 @@ export default {
           })
       }
   },
-
   methods: {
     loadSuppliers() {
       axios
         .get("/api/supplier")
-        .then((res) => {
-
-          this.suppliers = res.data.data;
+        .then((data) => {
+          this.suppliers = data.data;
         })
         .catch((error) => console.log(error.data));
     },

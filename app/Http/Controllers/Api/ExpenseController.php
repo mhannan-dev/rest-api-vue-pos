@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Category;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Expense;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class ExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->get();
-        return response()->json($categories, 200);
+        $expenses = Expense::orderby('id', 'desc')->get();
+        return response()->json($expenses, 200);
     }
 
     /**
@@ -37,10 +36,12 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Category $category)
+    public function store(Request $request, Expense $expense)
     {
         $validator = Validator::make($request->all(), [
-            'category_name' => 'required|string|max:255'
+            'details' => 'required',
+            'amount' => 'required',
+            'expense_date' => 'required',
         ]);
         //Check validation failure
         if ($validator->fails()) {
@@ -50,17 +51,19 @@ class CategoryController extends Controller
             ], 401);
         }
         try {
-            $category->category_name = $request->category_name;
-            $category->slug =  Str::slug($request->category_name);
-            $category->save();
+            $expense->details = $request->details;
+            $expense->amount = $request->amount;
+            $expense->expense_date = date('Y-m-d', strtotime($request->expense_date));
+            $expense->save();
             return response()->json([
                 'success' => true,
-                'message' => 'Category saved successfully',
+                'message' => 'Expense saved successfully',
             ], 200);
         } catch (\Throwable $th) {
+            //dd($th);
             return response()->json([
                 'success' => false,
-                'message' => 'Category not saved',
+                'message' => 'Expense not saved',
             ], 400);
         }
     }
@@ -68,22 +71,22 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $category = Category::find($id);
-        return response()->json($category);
+        $product = Expense::find($id);
+        return response()->json($product);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Expense $expense)
     {
         //
     }
@@ -92,14 +95,15 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //dd($category);
         $validator = Validator::make($request->all(), [
-            'category_name' => 'required|unique:categories,category_name,'.$id,
+            'details' => 'required',
+            'amount' => 'required',
+            'expense_date' => 'required'
         ]);
         //Check validation failure
         if ($validator->fails()) {
@@ -108,36 +112,43 @@ class CategoryController extends Controller
                 'errors' => $validator->errors(),
             ], 401);
         }
-        $category = Category::findOrFail($id);
-        $category->category_name = $request->category_name;
-        $category->update();
-        return response()->json([
-            'success' => true,
-            'message' => 'Category updated successfully',
-        ], 200);
+        try {
+            $expense = Expense::findOrFail($id);
+            $expense->details = $request->details;
+            $expense->amount = $request->amount;
+            $expense->expense_date = $request->expense_date;
+            $expense->update();
+            return response()->json([
+                'success' => true,
+                'message' => 'Expense updated successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Expense not updated',
+            ], 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
-            $category = Category::findOrFail($id);
-            if (!is_null($category)) {
-                $category->delete();
-                return response()->json([
-                    'success' => true,
-                    'message' => 'This category has been deleted',
-                ], 200);
-            }
+            $expense = Expense::findOrFail($id);
+            $expense->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'This expense has been deleted',
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'This category not deleted',
+                'message' => 'This expense not deleted',
             ], 400);
         }
     }

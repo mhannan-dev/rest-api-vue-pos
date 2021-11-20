@@ -76,8 +76,8 @@
                             :key="index"
                           >
                             <td>{{ ++index }}</td>
-                            <td>{{ product.product_name }}</td>
-                            <td>{{ product.product_code }}</td>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.code }}</td>
                             <td>{{ product.category.category_name }}</td>
                             <td>{{ product.supplier.title }}</td>
                             <td>{{ product.buying_price }}</td>
@@ -91,15 +91,7 @@
                                 alt="image"
                               />
                             </td>
-                            <td>
-                              <img
-                                class="img-fluid img-circle"
-                                width="80px"
-                                :src="product.image"
-                                id="empPhoto"
-                                alt="image"
-                              />
-                            </td>
+                           
                             <td>
                               <router-link
                                 :to="{
@@ -212,7 +204,7 @@ export default {
   computed: {
     filterSearch() {
       return this.products.filter((product) => {
-        return product.product_name.match(this.searchTerm);
+        return product.title.match(this.searchTerm);
       });
     },
   },

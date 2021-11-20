@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Advanced Form</h1>
+            <h1>Expense</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -24,46 +24,41 @@
             <!-- jquery validation -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Add Post</h3>
+                <h3 class="card-title">Add Expense</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <form @submit.prevent="addPost" enctype="multipart/form-data">
+                <form @submit.prevent="addExpense">
                   <div class="form-row">
-                    <div class="form-group col-md-4">
-                      <label for="inputEmail4">Enter Image Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Enter name"
-                        v-model="form.title"
-                        name="title"
-                      />
-                      <p v-if="erros.title" class="text-danger">
-                        {{ erros.title[0] }}
+                    <div class="form-group col-md-12">
+                      <label for="category_name">Expense Details</label>
+                      <textarea class="form-control" v-model="form.details" rows="2" placeholder="Paid against XYZ"></textarea>
+                      <p v-if="erros.details" class="text-danger">
+                        {{ erros.details[0] }}
                       </p>
                     </div>
-                    <div class="form-group col-md-4">
-                      <label for="inputEmail4">Image</label>
+                    <div class="form-group col-md-6">
+                      <label for="category_name">Amount</label>
                       <input
-                        type="file"
-                        name="image"
+                        type="number"
+                        v-model="form.amount"
                         class="form-control"
-                        @change="onFileSelected"
-                        accept="image/*"
+                        placeholder="Expense amount"
                       />
-
-                      <p v-if="erros.image" class="text-danger">
-                        {{ erros.image[0] }}
+                      <p v-if="erros.amount" class="text-danger">
+                        {{ erros.amount[0] }}
                       </p>
                     </div>
-                    <div class="form-group col-md-4">
-                      <label for="picture">Image Preview</label> <br>
-                      <img :src="form.image" alt="Image" style="hieght:80px; width: 80px;">
+                    <div class="form-group col-md-6">
+                       <label for="expense_date">Expense Date</label>
+                       <input type="text" id="datepicker" class="form-control" v-model="form.expense_date" placeholder="Select Date">
+                       <p v-if="erros.expense_date" class="text-danger">
+                        {{ erros.expense_date[0] }}
+                      </p>
                     </div>
                   </div>
                   <button type="submit" class="btn btn-success">
-                    Save Post
+                    Save
                   </button>
                 </form>
               </div>
@@ -84,39 +79,22 @@
 
 <script type="text/javascript">
 export default {
-  //Data property
   data() {
     return {
       form: {
-        title: null,
-        image: null,
+        details: null,
+        expense_date: null,
+        amount: null
       },
       erros: [],
     };
   },
   //Methods here
   methods: {
-    onFileSelected(e) {
-      const file = e.target.files[0];
-      // Do some client side validation...
-      if (file.size > 1048770) {
-        Notifications.imageValidation();
-      } else {
-        let reader = new FileReader();
-        reader.onload = (event) => {
-          this.form.image = event.target.result;
-          //console.log(event.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-    addPost() {
-      axios
-        .post("/api/post", this.form)
+    addExpense() {
+      axios.post("/api/expense", this.form)
         .then((response) => {
-          //Redirect to employees
-          this.$router.push({ name: "posts" });
-          //Toast message
+          this.$router.push({ name: "expenses" });
           Notifications.success();
         })
         .catch((error) => {
@@ -126,6 +104,5 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 </style>

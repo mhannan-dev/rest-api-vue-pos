@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Expenses</h1>
           </div>
           <!-- /.col -->
           <div class="col-sm-6">
@@ -26,20 +26,17 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Search Employee Name"
+              placeholder="Search expense"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Employees</h3>
-                <router-link
-                  to="/employee-add"
-                  class="btn btn-success float-right"
-                >
+                <h3 class="card-title">Expenses</h3>
+                <router-link to="/expense-add" class="btn btn-success float-right">
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Employee</router-link
+                  Expense</router-link
                 >
               </div>
               <!-- /.card-header -->
@@ -59,50 +56,41 @@
                         <thead>
                           <tr>
                             <th class="th-sm">ID</th>
-                            <th class="th-sm">Name</th>
-                            <th class="th-sm">Mobile</th>
-                            <th class="th-sm">Address</th>
-                            <th class="th-sm">Photo</th>
+                            <th class="th-sm">Details</th>
+                            <th class="th-sm">Expense Date</th>
+                            <th class="th-sm">Amount</th>
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
 
-                        <tbody v-if="employees.length">
+                        <tbody v-if="expenses.length">
                           <tr
-                            v-for="(employee, index) in filterSearch"
+                            v-for="(expenseData, index) in filterSearch"
                             :key="index"
                           >
                             <td>{{ ++index }}</td>
-                            <td>{{ employee.name }}</td>
-                            <td>{{ employee.mobile }}</td>
-                            <td>{{ employee.address }}</td>
-                            <td>
-                              <img
-                                class="img-fluid img-circle"
-                                width="80px"
-                                :src="employee.image"
-                                id="empPhoto"
-                                alt="image"
-                              />
-                            </td>
+                            <td>{{ expenseData.details }}</td>
+                            <td>{{ expenseData.expense_date }}</td>
+                            <td>{{ expenseData.amount }}</td>
+
+
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'employeeEdit',
-                                  params: { id: employee.id },
+                                  name: 'expenseEdit',
+                                  params: { id: expenseData.id },
                                 }"
                                 class="btn btn-primary btn-sm"
                               >
                                 <i class="fas fa-edit"></i>
                               </router-link>
 
-                              <a
-                                @click.prevent="deleteEmployee(employee.id)"
-                                href="#"
+                              <button
+                                @click.prevent="deleteExpense(expenseData.id)"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="fas fa-trash"></i>
-                              </a>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -116,6 +104,7 @@
                             </td>
                           </tr>
                         </tbody>
+                      </table>
                       </table>
                     </div>
                   </div>
@@ -200,27 +189,27 @@ export default {
   },
   data() {
     return {
-      employees: [],
+      expenses: [],
       searchTerm: "",
     };
   },
   computed: {
     filterSearch() {
-      return this.employees.filter((employee) => {
-        return employee.mobile.match(this.searchTerm);
+      return this.expenses.filter((expense) => {
+        return expense.expense_date.match(this.searchTerm);
       });
     },
   },
   methods: {
-    loadEmployees() {
+    loadExpenses() {
       axios
-        .get('api/employee')
+        .get('api/expense')
         .then((data) => {
-          this.employees = data.data;
+          this.expenses = data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    deleteEmployee(id) {
+    deleteExpense(id) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -231,23 +220,22 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          //axios.delete(`/api/employee/${employee.id}`)
-          axios.delete("api/employee/" + id)
+          axios.delete("api/expense/" + id)
             .then(() => {
-              this.employees = this.employees.filter((employee) => {
-                return employee.id != id;
+              this.expenses = this.expenses.filter((expense) => {
+                return expense.id != id;
               });
             })
             .catch(() => {
-              this.$router.push('employees');
+              this.$router.push('expenses');
             });
-          Swal.fire("Deleted!", "Your data has been deleted.", "success");
+          Swal.fire("Deleted!", "Your expense has been deleted.", "success");
         }
       });
     },
   },
   created() {
-    this.loadEmployees();
+    this.loadExpenses();
   },
 };
 </script>

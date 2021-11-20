@@ -46,7 +46,6 @@
                       <p v-if="erros.name" class="text-danger">
                         {{ erros.name[0] }}
                       </p>
-
                     </div>
                     <div class="form-group col-md-4">
                       <label for="inputEmail4">Email</label>
@@ -60,7 +59,6 @@
                       <p v-if="erros.email" class="text-danger">
                         {{ erros.email[0] }}
                       </p>
-
                     </div>
                     <div class="form-group col-md-4">
                       <label for="salary">Salary</label>
@@ -74,12 +72,11 @@
                       <p v-if="erros.salary" class="text-danger">
                         {{ erros.salary[0] }}
                       </p>
-
                     </div>
                   </div>
 
                   <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label for="inputZip">NID</label>
                       <input
                         type="number"
@@ -91,9 +88,8 @@
                       <p v-if="erros.nid" class="text-danger">
                         {{ erros.nid[0] }}
                       </p>
-
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label for="mobile">Mobile No</label>
                       <input
                         type="text"
@@ -106,38 +102,8 @@
                         {{ erros.mobile[0] }}
                       </p>
                     </div>
-                    <div class="form-group col-md-6">
-                      <label>Date:</label>
-                      <div
-                        class="input-group date"
-                        id="reservationdate"
-                        data-target-input="nearest"
-                      >
-                        <input
-                          type="text"
-                          class="form-control datetimepicker-input"
-                          data-target="#reservationdate"
-                          placeholder="Enter date"
-                          v-model="form.joining_date"
-                          name="joining_date"
-                        />
 
-                        <div
-                          class="input-group-append"
-                          data-target="#reservationdate"
-                          data-toggle="datetimepicker"
-                        >
-                          <div class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </div>
-                        </div>
-
-                      </div>
-                      <p v-if="erros.joining_date" class="text-danger">
-                          {{ erros.joining_date[0] }}
-                        </p>
-                    </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label for="address">Address</label>
                       <input
                         class="form-control"
@@ -149,12 +115,18 @@
                         {{ erros.address[0] }}
                       </p>
                     </div>
-                    <div class="form-group form-row col-md-6">
+                    <div class="form-group form-row col-md-4">
                       <label for="photo">Photo</label>
-                      <input type="file" class="form-control" name="image" @change="onFileSelected" accept="image/*"/>
-                        <p v-if="erros.image" class="text-danger">
-                          {{ erros.image[0] }}
-                        </p>
+                      <input
+                        type="file"
+                        class="form-control"
+                        name="image"
+                        @change="onFileSelected"
+                        accept="image/*"
+                      />
+                      <p v-if="erros.image" class="text-danger">
+                        {{ erros.image[0] }}
+                      </p>
                     </div>
                     <img
                       :src="form.image"
@@ -162,6 +134,13 @@
                       class="img-fluid m-2"
                       width="80px;"
                     />
+                    <div class="form-group col-md-4">
+                       <label for="address">Joining date</label>
+                       <input type="text" id="datepicker" class="form-control" v-model="form.joining_date" name="joining_date">
+                       <p v-if="erros.joining_date" class="text-danger">
+                        {{ erros.joining_date[0] }}
+                      </p>
+                    </div>
                   </div>
                   <button type="submit" class="btn btn-success">Save</button>
                 </form>
@@ -199,7 +178,7 @@ export default {
         address: null,
         nid: null,
         joining_date: null,
-        image: null
+        image: null,
       },
       erros: [],
     };
@@ -222,12 +201,13 @@ export default {
     },
     addEmployee() {
       axios
-        .post('/api/employee', this.form)
+        .post("/api/employee", this.form)
         .then((response) => {
+          //console.log(response.data);
           //Redirect to employees
-          this.$router.push('employees');
           //Toast message
           Notifications.success();
+          this.$router.push("employees");
         })
         .catch((error) => {
           this.erros = error.response.data.errors;

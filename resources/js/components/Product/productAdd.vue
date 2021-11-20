@@ -51,10 +51,12 @@
                         >Supplier select</label
                       >
                       <select class="form-control" v-model="form.supplier_id">
-                        <option value="" selected>Select supplier</option>
+                        <option style="" value="" selected>
+                          Select supplier
+                        </option>
                         <option
                           :value="supplier.id"
-                          v-for="(supplier, index) in suppliers.data"
+                          v-for="(supplier, index) in suppliers"
                           :key="index"
                         >
                           {{ supplier.title }}
@@ -67,10 +69,10 @@
                         type="text"
                         class="form-control"
                         placeholder="Enter Product Name"
-                        v-model="form.product_name"
+                        v-model="form.title"
                       />
-                      <p v-if="erros.product_name" class="text-danger">
-                        {{ erros.product_name[0] }}
+                      <p v-if="erros.title" class="text-danger">
+                        {{ erros.title[0] }}
                       </p>
                     </div>
                     <div class="form-group col-md-4">
@@ -91,10 +93,10 @@
                         type="text"
                         class="form-control"
                         placeholder="Enter product code"
-                        v-model="form.product_code"
+                        v-model="form.code"
                       />
-                      <p v-if="erros.product_code" class="text-danger">
-                        {{ erros.product_code[0] }}
+                      <p v-if="erros.code" class="text-danger">
+                        {{ erros.code[0] }}
                       </p>
                     </div>
                     <div class="form-group col-md-4">
@@ -127,19 +129,13 @@
                         type="number"
                         class="form-control"
                         placeholder="Enter product quantity"
-                        v-model="form.product_quantity"
+                        v-model="form.buying_quantity"
                       />
-                      <p v-if="erros.product_quantity" class="text-danger">
-                        {{ erros.product_quantity[0] }}
+                      <p v-if="erros.buying_quantity" class="text-danger">
+                        {{ erros.buying_quantity[0] }}
                       </p>
                     </div>
-                    <div class="form-group col-md-3">
-                      <label>Buying Date</label>
-                      <input id="datepicker" name="buying_date" v-model="form.buying_date" width="276" />
-                      <p v-if="erros.buying_date" class="text-danger">
-                        {{ erros.buying_date[0] }}
-                      </p>
-                    </div>
+
                     <div class="form-group col-md-3">
                       <label for="inputEmail4">Image</label>
                       <input
@@ -159,6 +155,18 @@
                         style="hieght: 100px; width: 100px"
                         :src="form.product_image"
                       />
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="buying_date">Buying date</label>
+                      <input
+                        type="text"
+                        id="datepicker"
+                        class="form-control"
+                        v-model="form.buying_date"
+                      />
+                      <p v-if="erros.buying_date" class="text-danger">
+                        {{ erros.buying_date[0] }}
+                      </p>
                     </div>
                   </div>
                   <button type="submit" class="btn btn-success">
@@ -189,14 +197,14 @@ export default {
       form: {
         category_id: null,
         supplier_id: null,
-        product_name: null,
-        product_code: null,
+        title: null,
+        code: null,
         root: null,
         buying_price: null,
         selling_price: null,
-        buying_date: null,
         product_image: null,
-        product_quantity: null,
+        buying_quantity: null,
+        buying_date: null,
       },
       erros: [],
       categories: [],
@@ -233,16 +241,19 @@ export default {
         });
     },
     loadCategories() {
-      axios.get("api/category").then((data) => {
-        //console.log(this.categories = data.data);
-        this.categories = data.data;
-      });
+      //Collect category
+      axios.get("/api/category/").then(
+        ({ data }) =>
+          //console.log(data)
+          (this.categories = data)
+      );
     },
     loadSuppliers() {
-      axios.get("api/supplier").then((data) => {
-        //console.log(this.suppliers = data.data);
-        this.suppliers = data.data;
-      });
+      //Collect supplier
+      axios.get("/api/supplier/").then(
+        ({ data }) =>
+          (this.suppliers = data)
+      );
     },
   },
   mounted() {

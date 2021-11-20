@@ -16,15 +16,15 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->comment('PK on categories table')->constrained();
-            $table->foreignId('supplier_id')->comment('ID of supplier table')->constrained();
-            $table->string('product_name');
-            $table->string('product_code');
+            $table->foreignId('supplier_id')->comment('PK of suppliers table')->constrained();
+            $table->string('title', 255);
+            $table->string('code');
             $table->string('root')->nullable();
             $table->double('buying_price', 20, 2);
             $table->double('selling_price', 20, 2);
             $table->date('buying_date')->nullable();
             $table->string('product_image')->nullable();
-            $table->string('product_quantity');
+            $table->string('buying_quantity');
             $table->timestamps();
         });
     }
