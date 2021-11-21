@@ -40,25 +40,16 @@ class SalaryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Salary $Salary)
+    public function store(Request $request, Salary $salary)
     {
-        $validator = Validator::make($request->all(), [
-            'details' => 'required',
-            'amount' => 'required',
-            'Salary_date' => 'required',
-        ]);
-        //Check validation failure
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => true,
-                'errors' => $validator->errors(),
-            ], 401);
-        }
+
         try {
-            $Salary->details = $request->details;
-            $Salary->amount = $request->amount;
-            $Salary->Salary_date = date('Y-m-d', strtotime($request->Salary_date));
-            $Salary->save();
+            $salary->employee_id = $request->employee_id;
+            $salary->amount = $request->amount;
+            $salary->month = $request->month;
+            $salary->year = $request->year;
+            $salary->payment_date = date('Y-m-d', strtotime($request->payment_date));
+            $salary->save();
             return response()->json([
                 'success' => true,
                 'message' => 'Salary saved successfully',
@@ -67,7 +58,7 @@ class SalaryController extends Controller
             //dd($th);
             return response()->json([
                 'success' => false,
-                'message' => 'Salary not saved',
+                'message' => 'Salary not updated',
             ], 400);
         }
     }
@@ -155,5 +146,43 @@ class SalaryController extends Controller
                 'message' => 'This Salary not deleted',
             ], 400);
         }
+    }
+    public function salaryPaid(Request $request, $id)
+    {
+        //dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'month' => 'required'
+        ]);
+        //Check validation failure
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => true,
+                'errors' => $validator->errors(),
+            ], 401);
+        }
+        $month = $request->month;
+        $checkSalaryMonth = DB::table('salaries')->where('employee_id', $id)->where('month', $month)->first();
+        if ($checkSalaryMonth) {
+            return response()->json('Salary already paid');
+        } else {
+            $data = array();
+            $data['employee_id'] = $id;
+            $data['amount'] = $request->salary;
+            $data['month'] = $month;
+            $data['year'] = date('Y');
+            $data['payment_date'] = date('Y-m-d');
+            DB::table('salaries')->insert($data);
+        }
+    }
+
+    public function allSalary()
+    {
+        //$salaries = Salary::select('month')->groupBy('month')->latest()->get();
+        $salaries = DB::table('salaries')->select('month')->groupBy('month')->get();
+        return response()->json($salaries, 200);
+    }
+    public function salaryView($id)
+    {
+        return response()->json('ok');
     }
 }

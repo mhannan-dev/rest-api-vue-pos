@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Salary</h1>
+            <h1 class="m-0">All Salary</h1>
           </div>
           <!-- /.col -->
           <div class="col-sm-6">
@@ -22,25 +22,11 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3 mb-2">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search Employee Name"
-              v-model="searchTerm"
-            />
-          </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Salaries</h3>
-                <router-link
-                  to="/salary-add"
-                  class="btn btn-success float-right"
-                >
-                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Salary</router-link
-                >
+                <h3 class="card-title">All Salary</h3>
+
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -59,42 +45,24 @@
                         <thead>
                           <tr>
                             <th class="th-sm">ID</th>
-                            <th class="th-sm">Employee</th>
-                            <th class="th-sm">Salary Amount</th>
-                            <th class="th-sm">Payment Date</th>
-                            <th class="th-sm">Month</th>
-                            <th class="th-sm">Year</th>
-                            <th class="th-sm">Action</th>
+                            <th class="th-sm">Name</th>
+                            <th class="th-sm">Details</th>
                           </tr>
                         </thead>
-
                         <tbody>
-                          <tr
-                            v-for="(salary, index) in filterSearch"
-                            :key="index"
-                          >
+                          <tr v-for="(salary, index) in salaries" :key="index">
                             <td>{{ ++index }}</td>
-                            <td>{{ salary.name }}</td>
-                            <td>{{ salary.amount }}</td>
-                            <td>{{ salary.payment_date }}</td>
                             <td>{{ salary.month }}</td>
-                            <td>{{ salary.year }}</td>
                             <td>
-                              <router-link
+                                 <router-link
                                 :to="{
-                                  name: 'salaryEdit',
-                                  params: { id: salary.id },
+                                  name: 'salaryView',
+                                  params: { id: salary.month },
                                 }"
                                 class="btn btn-primary btn-sm"
                               >
-                                <i class="fas fa-edit"></i>
+                                View Details
                               </router-link>
-                              <button
-                                @click.prevent="deleteSalary(salary.id)"
-                                class="btn btn-danger btn-sm"
-                              >
-                                <i class="fas fa-trash"></i>
-                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -182,51 +150,19 @@ export default {
   },
   data() {
     return {
-      salaries: [],
-      searchTerm: "",
+      salaries: []
     };
   },
-  computed: {
-    filterSearch() {
-      return this.salaries.filter((salary) => {
-        return salary.payment_date.match(this.searchTerm);
-      });
-    },
-  },
+
   methods: {
     loadSalaries() {
       axios
-        .get("api/salary")
+        .get("/api/salaries")
         .then((data) => {
           //console.log(data);
           this.salaries = data.data;
         })
         .catch((error) => console.log(error.data));
-    },
-    deleteSal(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .delete("api/salary/" + id)
-            .then(() => {
-              this.salaries = this.salaries.filter((salary) => {
-                return salary.id != id;
-              });
-            })
-            .catch(() => {
-              this.$router.push("salaries");
-            });
-          Swal.fire("Deleted!", "Salary record has been deleted.", "success");
-        }
-      });
     },
   },
   created() {

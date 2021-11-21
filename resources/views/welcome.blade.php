@@ -194,10 +194,17 @@
                                 </p>
                             </router-link>
                             <ul class="nav nav-treeview">
+
+                                <li class="nav-item">
+                                    <router-link to="/employee-salary-list" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Employees::Salary</p>
+                                    </router-link>
+                                </li>
                                 <li class="nav-item">
                                     <router-link to="/salaries" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Salary</p>
+                                        <p>All Salary</p>
                                     </router-link>
                                 </li>
                             </ul>
@@ -256,7 +263,6 @@
     </div>
     <!-- ./wrapper -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- Bootstrap 4 -->
