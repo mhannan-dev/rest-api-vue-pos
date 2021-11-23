@@ -198,11 +198,11 @@
                                 <li class="nav-item">
                                     <router-link to="/employee-salary-list" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Employees::Salary</p>
+                                        <p>Given Salary</p>
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link to="/salaries" class="nav-link">
+                                    <router-link to="/salary" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Salary</p>
                                     </router-link>

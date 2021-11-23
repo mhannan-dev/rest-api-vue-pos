@@ -177,12 +177,17 @@ class SalaryController extends Controller
 
     public function allSalary()
     {
-        //$salaries = Salary::select('month')->groupBy('month')->latest()->get();
         $salaries = DB::table('salaries')->select('month')->groupBy('month')->get();
+        //dd($salaries);
         return response()->json($salaries, 200);
     }
     public function salaryView($id)
     {
-        return response()->json('ok');
+        $month = $id;
+        $view = DB::table('salaries')
+            ->join('employees','salaries.employee_id','employees.id')
+            ->select('employees.name','salaries.*')
+            ->where('salaries.month',$month)->get();
+        return response()->json($view);
     }
 }
