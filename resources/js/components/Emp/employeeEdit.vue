@@ -212,7 +212,11 @@ export default {
     let id = this.$route.params.id;
     axios
       .get("/api/employee/" + id)
-      .then(({ data }) => (this.form = data))
+      .then(({ data }) =>
+       (
+           //console.log(data)
+           this.form = data
+           ))
       .catch(() => {
         console.log("error");
       });

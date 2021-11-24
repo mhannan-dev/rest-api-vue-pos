@@ -26,9 +26,10 @@ let expenseAdd = require('./components/Expense/expenseAdd.vue').default
 let expenseEdit  = require('./components/Expense/expenseEdit.vue').default
 //Salary
 let employeeSheet  = require('./components/Salary/all_employees.vue').default
-let salary  = require('./components/Salary/index.vue').default
+let allSalary  = require('./components/Salary/index.vue').default
 let paySalary  = require('./components/Salary/create.vue').default
 let viewSalary  = require('./components/Salary/view.vue').default
+let editSalary  = require('./components/Salary/edit.vue').default
 
 // Register route array
 export const routes = [
@@ -61,7 +62,8 @@ export const routes = [
     // Salaries
     { path: '/employee-salary-list/', component: employeeSheet, name: 'employeeSheet'},
     { path: '/pay-salary/:id', component: paySalary, name: 'paySalary'},
-    { path: '/salary', component: salary, name: 'all-salary'},
+    { path: '/salary', component: allSalary, name: 'allSalary'},
     { path: '/view-salary/:id', component: viewSalary, name: 'view-salary'},
+    { path: '/edit-salary/:id', component: editSalary, name: 'edit-salary'},
 
 ]

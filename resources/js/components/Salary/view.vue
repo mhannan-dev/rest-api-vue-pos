@@ -58,6 +58,8 @@
                         <thead>
                           <tr>
                             <th class="th-sm">Name</th>
+                            <th class="th-sm">Salary Month of</th>
+                            <th class="th-sm">Paid on</th>
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
@@ -65,15 +67,17 @@
                         <tbody v-if="salaries.length">
                           <tr v-for="(salary, index) in filterSearch" :key="index">
                             <td>{{ salary.name }}</td>
+                            <td>{{ salary.month }}</td>
+                            <td>{{ salary.payment_date }}</td>
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'paySalary',
+                                  name: 'edit-salary',
                                   params: { id: salary.id },
                                 }"
                                 class="btn btn-success btn-sm"
                               >
-                                Pay Salary
+                               Edit Salary
                               </router-link>
                             </td>
                           </tr>
