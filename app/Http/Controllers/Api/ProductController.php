@@ -228,4 +228,15 @@ class ProductController extends Controller
             ], 400);
         }
     }
+
+    public function updateStock(Request $request, $id)
+    {
+        $data = array();
+        $data['buying_quantity'] = $request->buying_quantity;
+        DB::table('products')->where('id', $id)->update($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Product Quantity has been updated successfully'
+        ], 200);
+    }
 }

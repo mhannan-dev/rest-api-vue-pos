@@ -33,8 +33,14 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Employees</h3>
-               
+                <h3 class="card-title">products</h3>
+                <router-link
+                  to="/product-add"
+                  class="btn btn-success float-right"
+                >
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  Employee</router-link
+                >
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -54,41 +60,49 @@
                           <tr>
                             <th class="th-sm">ID</th>
                             <th class="th-sm">Name</th>
-                            <th class="th-sm">Mobile</th>
-                            <th class="th-sm">Salary</th>
+                            <th class="th-sm">Code</th>
+                            <th class="th-sm">Category</th>
+                            <th class="th-sm">Supplier</th>
+                            <th class="th-sm">Buy</th>
+                            <th class="th-sm">Sell Price</th>
+                            <th class="th-sm">Status</th>
+                            <th class="th-sm">Quantity</th>
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
 
-                        <tbody v-if="employees.length">
+                        <tbody>
                           <tr
-                            v-for="(employee, index) in filterSearch"
+                            v-for="(product, index) in filterSearch"
                             :key="index"
                           >
                             <td>{{ ++index }}</td>
-                            <td>{{ employee.name }}</td>
-                            <td>{{ employee.mobile }}</td>
-                            <td>{{ employee.salary }}</td>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.code }}</td>
+                            <td>{{ product.category.category_name }}</td>
+                            <td>{{ product.supplier.title }}</td>
+                            <td>{{ product.buying_price }}</td>
+                            <td>{{ product.selling_price }}</td>
+                            <td>
+                              <span class="badge badge-success" v-if="product.buying_quantity >= 1 ">Avaliable</span>
+                              <span class="badge badge-warning" v-else>Stock Out</span>
+                            </td>
+                            <td>
+                              {{ product.buying_quantity }}
+                            </td>
+
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'paySalary',
-                                  params: { id: employee.id },
+                                  name: 'updateStock',
+                                  params: { id: product.id },
                                 }"
-                                class="btn btn-success btn-sm"
+                                class="btn btn-primary btn-sm" title="Update Stock"
                               >
-                                Pay Salary
+                                <i class="fas fa-edit"></i>
                               </router-link>
-                            </td>
-                          </tr>
-                        </tbody>
 
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="6">
-                              <h5 class="text-center mt-4 mb-4">
-                                No item found.
-                              </h5>
+
                             </td>
                           </tr>
                         </tbody>
@@ -176,54 +190,30 @@ export default {
   },
   data() {
     return {
-      employees: [],
+      products: [],
       searchTerm: "",
     };
   },
   computed: {
     filterSearch() {
-      return this.employees.filter((employee) => {
-        return employee.mobile.match(this.searchTerm);
+      return this.products.filter((product) => {
+        return product.title.match(this.searchTerm);
       });
     },
   },
   methods: {
-    loadEmployees() {
-      axios
-        .get('api/employee')
-        .then((data) => {
-          this.employees = data.data;
+    loadProducts() {
+      axios.get("api/product")
+        .then((res) => {
+          //console.log(data);
+          this.products = res.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    deleteEmployee(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          //axios.delete(`/api/employee/${employee.id}`)
-          axios.delete("api/employee/" + id)
-            .then(() => {
-              this.employees = this.employees.filter((employee) => {
-                return employee.id != id;
-              });
-            })
-            .catch(() => {
-              this.$router.push('employees');
-            });
-          Swal.fire("Deleted!", "Your data has been deleted.", "success");
-        }
-      });
-    },
+
   },
   created() {
-    this.loadEmployees();
+    this.loadProducts();
   },
 };
 </script>

@@ -176,15 +176,39 @@
                             </router-link>
 
                         </li>
+
                         <li class="nav-item">
                             <router-link to="/products" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Products
                                 </p>
+                                <i class="right fas fa-angle-left"></i>
+                            </router-link>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <router-link to="/stock" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Stock</p>
+                                    </router-link>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+
+                        <li class="nav-item">
+                            <router-link to="/customers" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Customer
+                                </p>
                             </router-link>
 
                         </li>
+
+
                         <li class="nav-item">
                             <router-link to="/expenses" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>

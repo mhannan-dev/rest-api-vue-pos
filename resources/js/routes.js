@@ -20,6 +20,9 @@ let categoryEdit  = require('./components/Category/categoryEdit.vue').default
 let products = require('./components/Product/products.vue').default
 let productAdd = require('./components/Product/productAdd.vue').default
 let productEdit  = require('./components/Product/productEdit.vue').default
+//Stock
+let stock = require('./components/Product/stock.vue').default
+let updateStock = require('./components/Product/editStock.vue').default
 //Expenses
 let expenses = require('./components/Expense/expenses').default
 let expenseAdd = require('./components/Expense/expenseAdd.vue').default
@@ -30,6 +33,12 @@ let allSalary  = require('./components/Salary/index.vue').default
 let paySalary  = require('./components/Salary/create.vue').default
 let viewSalary  = require('./components/Salary/view.vue').default
 let editSalary  = require('./components/Salary/edit.vue').default
+
+//Customers
+let customers  = require('./components/Customer/all_customer.vue').default
+let customerAdd  = require('./components/Customer/customerAdd.vue').default
+let customerEdit  = require('./components/Customer/customerEdit.vue').default
+
 
 // Register route array
 export const routes = [
@@ -55,6 +64,9 @@ export const routes = [
     { path: '/products', component: products, name: 'products'},
     { path: '/product-add', component: productAdd, name: 'productAdd'},
     { path: '/product-edit/:id', component: productEdit, name: 'productEdit'},
+    //Stock
+    { path: '/stock', component: stock, name: 'stock'},
+    { path: '/update-stock/:id', component: updateStock, name: 'updateStock'},
     // Expense
     { path: '/expenses', component: expenses, name: 'expenses'},
     { path: '/expense-add', component: expenseAdd, name: 'expenseAdd'},
@@ -65,5 +77,9 @@ export const routes = [
     { path: '/salary', component: allSalary, name: 'allSalary'},
     { path: '/view-salary/:id', component: viewSalary, name: 'view-salary'},
     { path: '/edit-salary/:id', component: editSalary, name: 'edit-salary'},
+    //Customers
+    { path: '/customers/', component: customers, name: 'customers'},
+    { path: '/customer-add/', component: customerAdd, name: 'customerAdd'},
+    { path: '/customer-edit/', component: customerEdit, name: 'customerEdit'},
 
 ]

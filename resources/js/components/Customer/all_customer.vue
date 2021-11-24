@@ -26,15 +26,21 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Search Employee Name"
+              placeholder="Search customer Name"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Employees</h3>
-               
+                <h3 class="card-title">Customers</h3>
+                <router-link
+                  to="/customer-add"
+                  class="btn btn-success float-right"
+                >
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  Customer</router-link
+                >
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -55,30 +61,39 @@
                             <th class="th-sm">ID</th>
                             <th class="th-sm">Name</th>
                             <th class="th-sm">Mobile</th>
-                            <th class="th-sm">Salary</th>
+                            <th class="th-sm">Address</th>
+
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
 
-                        <tbody v-if="employees.length">
+                        <tbody v-if="customers.length">
                           <tr
-                            v-for="(employee, index) in filterSearch"
+                            v-for="(customer, index) in filterSearch"
                             :key="index"
                           >
                             <td>{{ ++index }}</td>
-                            <td>{{ employee.name }}</td>
-                            <td>{{ employee.mobile }}</td>
-                            <td>{{ employee.salary }}</td>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.mobile }}</td>
+                            <td>{{ customer.address }}</td>
+
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'paySalary',
-                                  params: { id: employee.id },
+                                  name: 'customerEdit',
+                                  params: { id: customer.id },
                                 }"
-                                class="btn btn-success btn-sm"
+                                class="btn btn-primary btn-sm"
                               >
-                                Pay Salary
+                                <i class="fas fa-edit"></i>
                               </router-link>
+
+                              <button
+                                @click.prevent="deleteCustomer(customer.id)"
+                                class="btn btn-danger btn-sm"
+                              >
+                                <i class="fas fa-trash"></i>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -176,27 +191,27 @@ export default {
   },
   data() {
     return {
-      employees: [],
+      customers: [],
       searchTerm: "",
     };
   },
   computed: {
     filterSearch() {
-      return this.employees.filter((employee) => {
-        return employee.mobile.match(this.searchTerm);
+      return this.customers.filter((customer) => {
+        return customer.mobile.match(this.searchTerm);
       });
     },
   },
   methods: {
-    loadEmployees() {
+    loadCustomers() {
       axios
-        .get('api/employee')
+        .get("api/customer")
         .then((data) => {
-          this.employees = data.data;
+          this.customers = data.data;
         })
         .catch((error) => console.log(error.data));
     },
-    deleteEmployee(id) {
+    deleteCustomer(id) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -207,15 +222,15 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          //axios.delete(`/api/employee/${employee.id}`)
-          axios.delete("api/employee/" + id)
+          axios
+            .delete("api/customer/" + id)
             .then(() => {
-              this.employees = this.employees.filter((employee) => {
-                return employee.id != id;
+              this.customers = this.customers.filter((customer) => {
+                return customer.id != id;
               });
             })
             .catch(() => {
-              this.$router.push('employees');
+              this.$router.push("customers");
             });
           Swal.fire("Deleted!", "Your data has been deleted.", "success");
         }
@@ -223,7 +238,7 @@ export default {
     },
   },
   created() {
-    this.loadEmployees();
+    this.loadCustomers();
   },
 };
 </script>
