@@ -26,15 +26,21 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Search product name"
+              placeholder="Search Employee Name"
               v-model="searchTerm"
             />
           </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Product Stock</h3>
-
+                <h3 class="card-title">products</h3>
+                <router-link
+                  to="/product-add"
+                  class="btn btn-success float-right"
+                >
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  Employee</router-link
+                >
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -59,8 +65,7 @@
                             <th class="th-sm">Supplier</th>
                             <th class="th-sm">Buy</th>
                             <th class="th-sm">Sell Price</th>
-                            <th class="th-sm">Status</th>
-                            <th class="th-sm">Quantity</th>
+                            <th class="th-sm">Photo</th>
                             <th class="th-sm">Action</th>
                           </tr>
                         </thead>
@@ -78,25 +83,33 @@
                             <td>{{ product.buying_price }}</td>
                             <td>{{ product.selling_price }}</td>
                             <td>
-                              <span class="badge badge-success" v-if="product.buying_quantity >= 1 ">Avaliable</span>
-                              <span class="badge badge-warning" v-else>Stock Out</span>
-                            </td>
-                            <td>
-                              {{ product.buying_quantity }}
+                              <img
+                                class="img-fluid img-circle"
+                                width="80px"
+                                :src="product.product_image"
+                                id="productPhoto"
+                                alt="image"
+                              />
                             </td>
 
                             <td>
                               <router-link
                                 :to="{
-                                  name: 'updateStock',
+                                  name: 'productEdit',
                                   params: { id: product.id },
                                 }"
-                                class="btn btn-primary btn-sm" title="Update Stock"
+                                class="btn btn-primary btn-sm"
                               >
                                 <i class="fas fa-edit"></i>
                               </router-link>
 
-
+                              <a
+                                @click.prevent="deleteEmployee(product.id)"
+                                href="#"
+                                class="btn btn-danger btn-sm"
+                              >
+                                <i class="fas fa-trash"></i>
+                              </a>
                             </td>
                           </tr>
                         </tbody>
@@ -197,14 +210,40 @@ export default {
   },
   methods: {
     loadProducts() {
-      axios.get("api/product")
+      axios
+        .get("api/product")
         .then((res) => {
           //console.log(data);
           this.products = res.data.data;
         })
         .catch((error) => console.log(error.data));
     },
-
+    deleteEmployee(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //axios.delete(`/api/product/${employee.id}`)
+          axios
+            .delete("api/product/" + id)
+            .then(() => {
+              this.products = this.products.filter((employee) => {
+                return employee.id != id;
+              });
+            })
+            .catch(() => {
+              this.$router.push("products");
+            });
+          Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        }
+      });
+    },
   },
   created() {
     this.loadProducts();

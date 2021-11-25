@@ -29,7 +29,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <form
-                  @submit.prevent="updateCustomer"
+                  @submit.prevent="createCustomer"
                 >
                   <input type="hidden" name="_method" value="PATCH" />
                   <div class="form-row">
@@ -91,7 +91,7 @@
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-success">Update</button>
+                  <button type="submit" class="btn btn-success">Save</button>
                 </form>
               </div>
             </div>
@@ -131,7 +131,7 @@ export default {
   },
   //Methods here
   methods: {
-    addCustomer() {
+    createCustomer() {
       axios
         .post("/api/customer", this.form)
         .then((response) => {

@@ -38,6 +38,8 @@ let editSalary  = require('./components/Salary/edit.vue').default
 let customers  = require('./components/Customer/all_customer.vue').default
 let customerAdd  = require('./components/Customer/customerAdd.vue').default
 let customerEdit  = require('./components/Customer/customerEdit.vue').default
+//POS
+let pos  = require('./components/POS/pos.vue').default
 
 
 // Register route array
@@ -81,5 +83,6 @@ export const routes = [
     { path: '/customers/', component: customers, name: 'customers'},
     { path: '/customer-add/', component: customerAdd, name: 'customerAdd'},
     { path: '/customer-edit/', component: customerEdit, name: 'customerEdit'},
-
+    //POS
+    { path: '/pos/', component: pos, name: 'pos'},
 ]
