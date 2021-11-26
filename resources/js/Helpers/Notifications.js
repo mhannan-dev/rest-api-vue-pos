@@ -7,6 +7,22 @@ class Notifications{
         timeout: 1000,
         }).show();
     }
+    cart_delete(){
+        new Noty({
+        type: 'success',
+        text: 'Successfully delete this item from cart',
+        layout: 'topRight',
+        timeout: 1000,
+        }).show();
+    }
+    cart_success(){
+        new Noty({
+        type: 'success',
+        text: 'Successfully added to cart',
+        layout: 'topRight',
+        timeout: 1000,
+        }).show();
+    }
     error(){
         new Noty({
         type: 'alert',

@@ -32,7 +32,8 @@ var toastrConfigs = {
 }
 Vue.use(CxltToastr, toastrConfigs)
 Vue.use(CxltToastr)
-//import { objectToFormData } from 'object-to-formdata'
+//Reload
+window.Reload = new Vue();
 // Routes
 import { routes } from './routes'
 const router = new VueRouter({

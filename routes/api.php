@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PosController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductController;
@@ -29,4 +30,8 @@ Route::get('/salary/view/{id}',[SalaryController::class, 'salaryView']);
 Route::get('/salary/edit/{id}',[SalaryController::class, 'salaryEdit']);
 Route::post('/salary/update/{id}',[SalaryController::class, 'salaryUpdate']);
 Route::get('/gettting-products/{id}',[PosController::class, 'subProducts'])->name('getting.products');
+//Cart
+Route::get('/add-to-cart/{id}',[CartController::class, 'addToCart'])->name('addToCart.product');
+Route::get('/cart-product/',[CartController::class, 'cartProducts'])->name('cart.product');
+Route::get('/remove-cart-product/{id}',[CartController::class, 'removeCart'])->name('cart.remove');
 
