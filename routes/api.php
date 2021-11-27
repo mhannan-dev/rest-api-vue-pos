@@ -33,5 +33,9 @@ Route::get('/gettting-products/{id}',[PosController::class, 'subProducts'])->nam
 //Cart
 Route::get('/add-to-cart/{id}',[CartController::class, 'addToCart'])->name('addToCart.product');
 Route::get('/cart-product/',[CartController::class, 'cartProducts'])->name('cart.product');
-Route::get('/remove-cart-product/{id}',[CartController::class, 'removeCart'])->name('cart.remove');
-
+Route::get('/remove-cart-product/{id}',[CartController::class, 'removeCart']);
+Route::get('/cart-increment/{id}',[CartController::class, 'incrementCart']);
+Route::get('/cart-decrement/{id}',[CartController::class, 'decrementCart']);
+Route::get('/vat',[CartController::class, 'vatAmount']);
+//Order placing
+Route::post('/place-order',[PosController::class, 'placeOrder']);

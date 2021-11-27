@@ -46,7 +46,7 @@
                       <th>Action</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="cartProducts.length">
                     <tr
                       v-for="(cartProduct, index) in cartProducts"
                       :key="index"
@@ -54,13 +54,31 @@
                       <td>{{ cartProduct.product_name }}</td>
                       <td>
                         <input
-                          style="width: 20px"
+                          style="width: 40px"
                           type="text"
                           :value="cartProduct.product_qty"
                           readonly
                         />
-                        <button class="btn btn-success btn-sm">+</button>
-                        <button class="btn btn-warning btn-sm">-</button>
+                        <button
+                          @click.prevent="cartIncrease(cartProduct.id)"
+                          class="btn btn-success btn-sm"
+                        >
+                          +
+                        </button>
+                        <button
+                          @click.prevent="cartDecrease(cartProduct.id)"
+                          class="btn btn-warning btn-sm"
+                          v-if="cartProduct.product_qty >= 2"
+                        >
+                          -
+                        </button>
+                        <button
+                          v-else
+                          class="btn btn-danger btn-sm"
+                          disabled=""
+                        >
+                          -
+                        </button>
                       </td>
                       <td>{{ cartProduct.product_price }}</td>
                       <td>{{ cartProduct.sub_total }}</td>
@@ -71,6 +89,13 @@
                         >
                           <i class="fas fa-minus-circle"></i>
                         </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="6">
+                        <h5 class="text-center mt-4 mb-4">No product found</h5>
                       </td>
                     </tr>
                   </tbody>
@@ -87,37 +112,37 @@
                   <tbody>
                     <tr>
                       <td>Total quantity</td>
-                      <td>550</td>
+                      <td class="pull-right">{{ cartQty }}</td>
                     </tr>
                     <tr>
                       <td>Subtotal</td>
-                      <td>550</td>
+                      <td>BDT. {{ subTotal }}</td>
                     </tr>
                     <tr>
                       <td>Vat</td>
-                      <td>550</td>
+                      <td>BDT. {{ vatAmt.vat }}%</td>
                     </tr>
                     <tr>
                       <td>Total</td>
-                      <td>550</td>
+                      <td>
+                        BDT. {{ (subTotal * vatAmt.vat) / 100 + subTotal }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <!-- /.card-body -->
             </div>
-            <form action="">
+            <form @submit.prevent="placeOrder">
               <div class="card card-primary">
                 <div class="card-body">
                   <div class="form-row">
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Customer Name</label>
-                      <select
-                        class="form-control"
-                        id="exampleFormControlSelect1"
-                      >
+                      <select class="form-control" v-model="customer_id">
                         <option value="">Select customer</option>
                         <option
+                          :value="customer.id"
                           v-for="(customer, index) in customers"
                           :key="index"
                         >
@@ -131,6 +156,7 @@
                         type="number"
                         class="form-control"
                         placeholder="Payment Amount"
+                        v-model="paymentAmount"
                       />
                     </div>
                   </div>
@@ -141,11 +167,12 @@
                         type="number"
                         class="form-control"
                         placeholder="Due Amount"
+                        v-model="dueAmount"
                       />
                     </div>
                     <div class="form-group col-md-6">
                       <label for="payment_mode">Payment Mode</label>
-                      <select class="form-control">
+                      <select class="form-control" v-model="paymentMode">
                         <option value="">Select option</option>
                         <option value="cash">Cash</option>
                         <option value="chqeue">Cheque</option>
@@ -154,7 +181,9 @@
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-success">Submit</button>
+                  <button type="submit" class="btn btn-success">
+                    Place Order
+                  </button>
                 </div>
               </div>
             </form>
@@ -219,7 +248,10 @@
                         v-for="(product, index) in filterSearch"
                         :key="index"
                       >
-                        <figure class="card card-product">
+                        <figure
+                          class="card card-product"
+                          @click.prevent="addToCart(product.id)"
+                        >
                           <img
                             class="img-fluid"
                             :src="product.product_image"
@@ -230,11 +262,23 @@
                             <h6 class="title">{{ product.title }}</h6>
                           </figcaption>
                           <div class="bottom-wrap">
-                            <button
+                            <!-- <button
                               class="btn btn-outline-success btn-sm btn-block"
                               @click.prevent="addToCart(product.id)"
                             >
                               Add to cart
+                            </button> -->
+                            <button
+                              class="btn btn-outline-success btn-sm btn-block"
+                              v-if="product.buying_quantity >= 1"
+                            >
+                              Avaliable
+                            </button>
+                            <button
+                              class="btn btn-warning btn-sm btn-block"
+                              v-else
+                            >
+                              Stock Out
                             </button>
                             <button class="btn btn-success btn-sm btn-block">
                               BDT. {{ product.selling_price }}
@@ -266,7 +310,10 @@
                         v-for="(getProduct, index) in filterCatPrd"
                         :key="index"
                       >
-                        <figure class="card card-product">
+                        <figure
+                          class="card card-product"
+                          @click.prevent="addToCart(getProduct.id)"
+                        >
                           <img
                             class="img-fluid"
                             :src="getProduct.product_image"
@@ -277,15 +324,28 @@
                             <h6 class="title">Product name</h6>
                           </figcaption>
                           <div class="bottom-wrap">
-                            <button
+                            <!-- <button
                               class="btn btn-outline-success btn-sm btn-block"
                               @click.prevent="addToCart(product.id)"
                             >
                               Add to cart
+                            </button> -->
+                            <button
+                              class="btn btn-outline-success btn-sm btn-block"
+                              v-if="getProduct.buying_quantity >= 1"
+                            >
+                              Avaliable
+                            </button>
+                            <button
+                              class="btn btn-warning btn-sm btn-block"
+                              v-else
+                            >
+                              Stock Out
                             </button>
                             <button class="btn btn-success btn-sm btn-block">
-                              {{ getProduct.selling_price }}
+                              BDT. {{ getProduct.selling_price }}
                             </button>
+                            <div></div>
                           </div>
                           <!-- bottom-wrap.// -->
                         </figure>
@@ -294,7 +354,6 @@
                   </div>
                 </div>
               </div>
-
               <!-- /.card-body -->
               <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">
@@ -328,18 +387,26 @@ export default {
     this.subProducts();
     this.loadCustomers();
     this.loadCartProducts();
+    this.vatAmount();
     Reload.$on("AfterAddReload", () => {
       this.loadCartProducts();
     });
   },
   data() {
     return {
+      //Order data
+      customer_id: "",
+      paymentAmount: "",
+      dueAmount: "",
+      paymentMode: "",
+      //Order data
       products: [],
       categories: "",
       customers: "",
       getProducts: [],
       filterSearchTerm: "",
       searchTerm: "",
+      vatAmt: "",
       cartProducts: [],
     };
   },
@@ -354,8 +421,69 @@ export default {
         return getProduct.title.match(this.filterSearchTerm);
       });
     },
+    cartQty() {
+      var sum = 0;
+      for (let i = 0; i < this.cartProducts.length; i++) {
+        sum += parseFloat(this.cartProducts[i].product_qty);
+      }
+      return sum;
+    },
+    subTotal() {
+      var totalSum = 0;
+      for (let i = 0; i < this.cartProducts.length; i++) {
+        totalSum +=
+          parseFloat(this.cartProducts[i].product_qty) *
+          parseFloat(this.cartProducts[i].product_price);
+      }
+      return totalSum;
+    },
   },
   methods: {
+    placeOrder() {
+      let total = (this.subTotal * this.vatAmt.vat) / 100 + this.subTotal;
+      let data = {
+        cartQty: this.cartQty,
+        subTotal: this.subTotal,
+        customer_id: this.customer_id,
+        paymentMode: this.paymentMode,
+        paymentAmount: this.paymentAmount,
+        vatAmt: this.vatAmt,
+        total: total,
+      };
+      //Place order
+      axios.post("/api/place-order", data)
+        .then(() => {
+          Notifications.success();
+        })
+      //Place order end
+    },
+    //Cart increase  and decreas
+    vatAmount() {
+      axios
+        .get("/api/vat")
+        .then((data) => {
+          //console.log(data);
+          this.vatAmt = data.data;
+        })
+        .catch((error) => console.log(error.res));
+    },
+    //Cart increase  and decreas
+    cartIncrease(id) {
+      axios
+        .get("/api/cart-increment/" + id)
+        .then(() => {
+          Reload.$emit("AfterAddReload");
+        })
+        .catch((error) => console.log(error.res));
+    },
+    cartDecrease(id) {
+      axios
+        .get("/api/cart-decrement/" + id)
+        .then(() => {
+          Reload.$emit("AfterAddReload");
+        })
+        .catch((error) => console.log(error.res));
+    },
     //Remove cart product
     removeCartProduct(id) {
       axios
@@ -374,7 +502,7 @@ export default {
           Reload.$emit("AfterAddReload");
           Notifications.cart_success();
         })
-        .catch((error) => console.log(error.res));
+        .catch((error) => console.log(error));
     },
     //Cart products
     loadCartProducts() {

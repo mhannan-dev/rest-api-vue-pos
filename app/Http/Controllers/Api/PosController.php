@@ -13,4 +13,8 @@ class PosController extends Controller
         $product = DB::table('products')->where('category_id',$id)->get();
         return response()->json($product);
     }
+    public function placeOrder()
+    {
+        return response('okay');
+    }
 }
