@@ -446,6 +446,7 @@ export default {
         subTotal: this.subTotal,
         customer_id: this.customer_id,
         paymentMode: this.paymentMode,
+        dueAmount: this.dueAmount,
         paymentAmount: this.paymentAmount,
         vatAmt: this.vatAmt,
         total: total,
@@ -453,6 +454,7 @@ export default {
       //Place order
       axios.post("/api/place-order", data)
         .then(() => {
+          this.$router.push({ name: 'stock' })
           Notifications.success();
         })
       //Place order end

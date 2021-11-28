@@ -40,6 +40,9 @@ let customerAdd  = require('./components/Customer/customerAdd.vue').default
 let customerEdit  = require('./components/Customer/customerEdit.vue').default
 //POS
 let pos  = require('./components/POS/pos.vue').default
+//Orders
+let todayOrders  = require('./components/Order/todayOrders.vue').default
+let viewOrder  = require('./components/Order/todayOrderDetail.vue').default
 
 
 // Register route array
@@ -84,5 +87,8 @@ export const routes = [
     { path: '/customer-add/', component: customerAdd, name: 'customerAdd'},
     { path: '/customer-edit/', component: customerEdit, name: 'customerEdit'},
     //POS
-    { path: '/pos/', component: pos, name: 'pos'},
+    { path: '/pos', component: pos, name: 'pos'},
+    //Order
+    { path: '/today-orders', component: todayOrders, name: 'todayOrders'},
+    { path: '/view-order/:id', component: viewOrder, name: 'viewOrder'},
 ]

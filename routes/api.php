@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PosController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductController;
@@ -39,3 +40,6 @@ Route::get('/cart-decrement/{id}',[CartController::class, 'decrementCart']);
 Route::get('/vat',[CartController::class, 'vatAmount']);
 //Order placing
 Route::post('/place-order',[PosController::class, 'placeOrder']);
+Route::get('/today-orders',[OrderController::class, 'todayOrders']);
+Route::get('/order-details/{id}',[OrderController::class, 'orderDetails']);
+Route::get('/order-order_details/{id}',[OrderController::class, 'orderDetailAll']);

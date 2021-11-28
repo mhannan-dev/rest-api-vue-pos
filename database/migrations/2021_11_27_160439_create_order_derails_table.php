@@ -13,8 +13,13 @@ class CreateOrderDerailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_derails', function (Blueprint $table) {
+        Schema::create('order_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_id');
+            $table->integer('product_id');
+            $table->integer('product_qty')->nullable();
+            $table->double('product_price', 20, 2)->nullable();
+            $table->double('sub_total', 20, 2)->nullable();
             $table->timestamps();
         });
     }
