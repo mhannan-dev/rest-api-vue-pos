@@ -56,10 +56,11 @@ class OrderController extends Controller
         $newDate = new DateTime($orderDate);
         $formatDate = $newDate->format('d/m/y');
         $orders = DB::table('orders')
-            ->join('customers', 'orders.customer_id', 'customers.id')
-            ->select('customers.name', 'orders.*')
-            ->where('orders.order_date', $formatDate)
-            ->get();
+        ->join('customers', 'orders.customer_id', 'customers.id')
+        ->select('customers.name', 'orders.*')
+        ->where('orders.order_date', $formatDate)
+        ->get();
+        //dd($orders);
         return response()->json($orders);
     }
 }
