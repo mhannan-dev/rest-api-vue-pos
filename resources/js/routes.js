@@ -43,6 +43,7 @@ let pos  = require('./components/POS/pos.vue').default
 //Orders
 let todayOrders  = require('./components/Order/todayOrders.vue').default
 let viewOrder  = require('./components/Order/todayOrderDetail.vue').default
+let searchBydate  = require('./components/Order/searchBydate.vue').default
 
 
 // Register route array
@@ -91,4 +92,5 @@ export const routes = [
     //Order
     { path: '/today-orders', component: todayOrders, name: 'todayOrders'},
     { path: '/view-order/:id', component: viewOrder, name: 'viewOrder'},
+    { path: '/date-by-search', component: searchBydate, name: 'searchBydate'},
 ]

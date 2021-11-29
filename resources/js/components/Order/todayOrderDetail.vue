@@ -51,7 +51,7 @@
                   <li class="list-group-item">Subtotal: {{ orders.sub_total }}</li>
                   <li class="list-group-item">Vat: {{ orders.vat_amount }}%</li>
                   <li class="list-group-item">Total: {{ orders.total }}</li>
-                  <li class="list-group-item">Pay amount: {{ orders.pay_amount }}</li>
+                  <li class="list-group-item">Payment amount: {{ orders.pay_amount }}</li>
                   <li class="list-group-item">Due amount: {{ orders.due_amount }}</li>
                 </ul>
               </div>

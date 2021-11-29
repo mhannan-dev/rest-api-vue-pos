@@ -173,6 +173,12 @@
                                         <p>Today Orders</p>
                                     </router-link>
                                 </li>
+                                <li class="nav-item">
+                                    <router-link to="/date-by-search" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Search</p>
+                                    </router-link>
+                                </li>
                             </ul>
                         </li>
 
