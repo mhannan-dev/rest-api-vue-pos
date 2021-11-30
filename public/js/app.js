@@ -8456,6 +8456,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -8560,7 +8562,160 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
+  created: function created() {
+    //Comes form helpers
+    if (!User.loggedIn()) {
+      this.$router.push("/");
+    }
+  },
+  data: function data() {
+    return {
+      totalSells: "",
+      todayRcvd: "",
+      todayDue: "",
+      todayExp: "",
+      products: ""
+    };
+  },
+  methods: {
+    todayTotalSell: function todayTotalSell() {
+      var _this = this;
+
+      axios.get("api/today-total-sell").then(function (data) {
+        //console.log(data);
+        _this.totalSells = data.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    todayRcvdAmount: function todayRcvdAmount() {
+      var _this2 = this;
+
+      axios.get("api/today-received-amount").then(function (data) {
+        //console.log(data);
+        _this2.todayRcvd = data.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    todayDueAmount: function todayDueAmount() {
+      var _this3 = this;
+
+      axios.get("api/today-due-amount").then(function (data) {
+        _this3.todayDue = data.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    todayExpAmount: function todayExpAmount() {
+      var _this4 = this;
+
+      axios.get("api/today-expense").then(function (data) {
+        _this4.todayExp = data.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    stockOut: function stockOut() {
+      var _this5 = this;
+
+      axios.get("api/stockout").then(function (data) {
+        console.log(data.data);
+        _this5.products = data.data;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  }
+}, "created", function created() {
+  this.todayTotalSell();
+  this.todayRcvdAmount();
+  this.todayDueAmount();
+  this.todayExpAmount();
+  this.stockOut();
+}));
 
 /***/ }),
 
@@ -54781,11 +54936,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            id: "datepicker",
-                            placeholder: "Select Date",
-                          },
+                          attrs: { type: "date", placeholder: "Select Date" },
                           domProps: { value: _vm.form.expense_date },
                           on: {
                             input: function ($event) {
@@ -61414,155 +61565,278 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("section", { staticClass: "content" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-3 col-6" }, [
+            _c("div", { staticClass: "small-box bg-success" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v("BDT. " + _vm._s(_vm.totalSells))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Sales Amount")]),
+              ]),
+              _vm._v(" "),
+              _vm._m(1),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-6" }, [
+            _c("div", { staticClass: "small-box bg-primary" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v("BDT. " + _vm._s(_vm.todayRcvd))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Today Received Amount")]),
+              ]),
+              _vm._v(" "),
+              _vm._m(2),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-6" }, [
+            _c("div", { staticClass: "small-box bg-warning" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v("BDT. " + _vm._s(_vm.todayDue))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Due Amount")]),
+              ]),
+              _vm._v(" "),
+              _vm._m(3),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-6" }, [
+            _c("div", { staticClass: "small-box bg-danger" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v("BDT. " + _vm._s(_vm.todayExp))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Expense")]),
+              ]),
+              _vm._v(" "),
+              _vm._m(4),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("section", { staticClass: "content" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "dataTables_wrapper dt-bootstrap4",
+                    attrs: { id: "example2_wrapper" },
+                  },
+                  [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-sm-12" }, [
+                        _c(
+                          "table",
+                          {
+                            staticClass:
+                              "\n                        table table-bordered table-hover\n                        dataTable\n                        dtr-inline\n                      ",
+                            attrs: {
+                              id: "example2",
+                              role: "grid",
+                              "aria-describedby": "example2_info",
+                            },
+                          },
+                          [
+                            _vm._m(7),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.products, function (product, index) {
+                                return _c("tr", { key: index }, [
+                                  _c("td", [_vm._v("BDT. " + _vm._s(++index))]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v("BDT. " + _vm._s(product.title)),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    product.buying_quantity == 0
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-warning",
+                                          },
+                                          [_vm._v("Stock Out")]
+                                        )
+                                      : _vm._e(),
+                                  ]),
+                                ])
+                              }),
+                              0
+                            ),
+                          ]
+                        ),
+                      ]),
+                    ]),
+                  ]
+                ),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "content-header" }, [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "row mb-2" }, [
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("h1", { staticClass: "m-0" }, [_vm._v("Dashboard")]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
-                _c("li", { staticClass: "breadcrumb-item" }, [
-                  _c("a", { attrs: { href: "#" } }, [_vm._v("Home")]),
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "breadcrumb-item active" }, [
-                  _vm._v("Dashboard v1"),
-                ]),
+    return _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("h1", { staticClass: "m-0" }, [_vm._v("Dashboard")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+              _c("li", { staticClass: "breadcrumb-item" }, [
+                _c("a", { attrs: { href: "#" } }, [_vm._v("Home")]),
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "breadcrumb-item active" }, [
+                _vm._v("Dashboard v1"),
               ]),
             ]),
           ]),
         ]),
       ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion ion-stats-bars" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion ion-stats-bars" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion ion-person-add" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion ion-pie-graph" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Out of stock products"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-sm-12 col-md-6" }),
       _vm._v(" "),
-      _c("section", { staticClass: "content" }, [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "small-box bg-info" }, [
-                _c("div", { staticClass: "inner" }, [
-                  _c("h3", [_vm._v("5000")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("Total Orders")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "ion ion-bag" }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "small-box-footer", attrs: { href: "#" } },
-                  [
-                    _vm._v("More info "),
-                    _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                  ]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "small-box bg-success" }, [
-                _c("div", { staticClass: "inner" }, [
-                  _c("h3", [_vm._v("150000")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("Total Received Amount")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "ion ion-stats-bars" }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "small-box-footer", attrs: { href: "#" } },
-                  [
-                    _vm._v("More info "),
-                    _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                  ]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "small-box bg-warning" }, [
-                _c("div", { staticClass: "inner" }, [
-                  _c("h3", [_vm._v("15000")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("Total Due Amount")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "ion ion-person-add" }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "small-box-footer", attrs: { href: "#" } },
-                  [
-                    _vm._v("More info "),
-                    _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                  ]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "small-box bg-danger" }, [
-                _c("div", { staticClass: "inner" }, [
-                  _c("h3", [_vm._v("65000")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("Total Expense")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "ion ion-pie-graph" }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "small-box-footer", attrs: { href: "#" } },
-                  [
-                    _vm._v("More info "),
-                    _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                  ]
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "small-box bg-primary" }, [
-                _c("div", { staticClass: "inner" }, [
-                  _c("h3", [_vm._v("65000")]),
-                  _vm._v(" "),
-                  _c("p", [_vm._v("Total Salary")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "icon" }, [
-                  _c("i", { staticClass: "ion ion-pie-graph" }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "small-box-footer", attrs: { href: "#" } },
-                  [
-                    _vm._v("More info "),
-                    _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                  ]
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
+      _c("div", { staticClass: "col-sm-12 col-md-6" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { attrs: { role: "row" } }, [
+        _c(
+          "th",
+          {
+            staticClass: "sorting_asc",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example2",
+              rowspan: "1",
+              colspan: "1",
+              "aria-sort": "ascending",
+              "aria-label":
+                "Rendering engine: activate to sort column descending",
+            },
+          },
+          [
+            _vm._v(
+              "\n                            SL\n                          "
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example2",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "Browser: activate to sort column ascending",
+            },
+          },
+          [
+            _vm._v(
+              "\n                            Product name\n                          "
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: {
+              tabindex: "0",
+              "aria-controls": "example2",
+              rowspan: "1",
+              colspan: "1",
+              "aria-label": "Engine version: activate to sort column ascending",
+            },
+          },
+          [
+            _vm._v(
+              "\n                            Quantity\n                          "
+            ),
+          ]
+        ),
       ]),
     ])
   },

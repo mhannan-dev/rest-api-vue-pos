@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group col-md-6">
                        <label for="expense_date">Expense Date</label>
-                       <input type="text" id="datepicker" class="form-control" v-model="form.expense_date" placeholder="Select Date">
+                       <input type="date" class="form-control" v-model="form.expense_date" placeholder="Select Date">
                        <p v-if="erros.expense_date" class="text-danger">
                         {{ erros.expense_date[0] }}
                       </p>

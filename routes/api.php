@@ -44,3 +44,9 @@ Route::get('/today-orders',[OrderController::class, 'todayOrders']);
 Route::get('/order-details/{id}',[OrderController::class, 'orderDetails']);
 Route::get('/order-order_details/{id}',[OrderController::class, 'orderDetailAll']);
 Route::post('/search-order/',[OrderController::class, 'searchOrder']);
+//Admin dashboard Route
+Route::get('/today-total-sell',[OrderController::class, 'todayTotal']);
+Route::get('/today-received-amount',[OrderController::class, 'todayRcvdAmount']);
+Route::get('/today-due-amount',[OrderController::class, 'todayDueAmount']);
+Route::get('/today-expense',[OrderController::class, 'todayExpAmount']);
+Route::get('/stockout',[OrderController::class, 'stockOut']);
