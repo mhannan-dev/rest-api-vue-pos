@@ -125,7 +125,7 @@
                     <tr>
                       <td>Total</td>
                       <td>
-                        BDT. {{ (subTotal * vatAmt.vat) / 100 + subTotal }}
+                        BDT. {{ subTotal * vatAmt.vat / 100 + subTotal }}
                       </td>
                     </tr>
                   </tbody>

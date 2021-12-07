@@ -25,6 +25,7 @@ class ProductController extends Controller
                 $query->select('id', 'category_name');
             },
         ])->latest()->get();
+        //dd($products);
         // $products = DB::table('products')
         //     ->join('categories', 'products.category_id', 'categories.id')
         //     ->join('suppliers', 'products.supplier_id', 'suppliers.id')

@@ -59,17 +59,17 @@
             </div>
           </form>
 
-          <div class="social-auth-links text-center mt-2 mb-3">
+          <!-- <div class="social-auth-links text-center mt-2 mb-3">
             <a href="#" class="btn btn-block btn-primary">
               <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
             </a>
             <a href="#" class="btn btn-block btn-danger">
               <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
             </a>
-          </div>
+          </div> -->
           <!-- /.social-auth-links -->
 
-          <p class="mb-1">
+          <!-- <p class="mb-1">
             <router-link to="/forgot-password"
               >I forgot my password</router-link
             >
@@ -78,7 +78,7 @@
             <router-link to="/register" class="text-center"
               >Register a new membership</router-link
             >
-          </p>
+          </p> -->
         </div>
         <!-- /.card-body -->
       </div>

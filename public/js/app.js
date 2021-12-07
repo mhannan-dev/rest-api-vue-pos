@@ -51569,32 +51569,6 @@ var render = function () {
               _vm._m(3),
             ]
           ),
-          _vm._v(" "),
-          _vm._m(4),
-          _vm._v(" "),
-          _c(
-            "p",
-            { staticClass: "mb-1" },
-            [
-              _c("router-link", { attrs: { to: "/forgot-password" } }, [
-                _vm._v("I forgot my password"),
-              ]),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "p",
-            { staticClass: "mb-0" },
-            [
-              _c(
-                "router-link",
-                { staticClass: "text-center", attrs: { to: "/register" } },
-                [_vm._v("Register a new membership")]
-              ),
-            ],
-            1
-          ),
         ]),
       ]),
     ]),
@@ -51648,34 +51622,6 @@ var staticRenderFns = [
         ),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "social-auth-links text-center mt-2 mb-3" },
-      [
-        _c(
-          "a",
-          { staticClass: "btn btn-block btn-primary", attrs: { href: "#" } },
-          [
-            _c("i", { staticClass: "fab fa-facebook mr-2" }),
-            _vm._v(" Sign in using Facebook\n          "),
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "btn btn-block btn-danger", attrs: { href: "#" } },
-          [
-            _c("i", { staticClass: "fab fa-google-plus mr-2" }),
-            _vm._v(" Sign in using Google+\n          "),
-          ]
-        ),
-      ]
-    )
   },
 ]
 render._withStripped = true
